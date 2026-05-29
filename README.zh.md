@@ -273,15 +273,68 @@ remove    删除
 
 ## 怎么安装？
 
-克隆仓库：
+Agent Evolution 是一个「单 skill 单仓库」。仓库根目录就是 skill 根目录。
+
+必须满足这个结构：
+
+```text
+agent-evolution/
+└── SKILL.md
+```
+
+### 1. 克隆仓库
 
 ```bash
 git clone https://github.com/chemny/agent-evolution.git
 ```
 
-然后把这个目录放到你的 Agent skills 目录里。关键是让 `SKILL.md` 位于 skill 根目录。
+### 2. 放到你的 Agent skills 目录
+
+把克隆下来的 `agent-evolution` 目录复制或软链接到你的 Agent skills 目录里。
+
+最终结构应该类似：
+
+```text
+skills/
+└── agent-evolution/
+    ├── SKILL.md
+    ├── references/
+    ├── adapters/
+    ├── scripts/
+    └── evals/
+```
+
+### 3. 开一个新会话
+
+很多 Agent 会在新会话启动时扫描 skill metadata。安装后建议重新开启一个新会话，让 Agent 读取 `SKILL.md` 里的 `name` 和 `description`。
+
+### 4. 验证是否生效
+
+可以在新会话里输入：
+
+```text
+使用 agent-evolution：记住我的写作风格是直接、实用、多用例子。请不要写文件，只说明你会如何处理这个记忆。
+```
+
+预期行为：
+
+```text
+路径：direct memory
+是否需要反复验证：不需要
+目标：宿主 Agent 的用户记忆位置
+```
 
 如果你的 skill 管理器支持从 GitHub 安装，可以直接把这个仓库作为单个 skill 安装。
+
+### 后续更新
+
+如果你是用 Git 安装的，可以在仓库目录里更新：
+
+```bash
+git pull
+```
+
+如果你的 Agent 只在会话启动时扫描 skills，更新后重新开一个新会话。
 
 ---
 
@@ -356,6 +409,7 @@ agent-evolution/
 ├── references/               # 按需读取的机制文档
 │   ├── direct-memory.md
 │   ├── eval-loop.md
+│   ├── installation.md
 │   ├── promotion.md
 │   ├── pruning.md
 │   ├── reflection.md

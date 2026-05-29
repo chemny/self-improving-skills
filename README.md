@@ -189,15 +189,68 @@ Agent Evolution is host-neutral. It does not assume one fixed memory path.
 
 ## Install
 
-Clone the repository:
+Agent Evolution is published as a single-skill repository. The repository root is the skill root.
+
+Required shape:
+
+```text
+agent-evolution/
+└── SKILL.md
+```
+
+### 1. Clone
 
 ```bash
 git clone https://github.com/chemny/agent-evolution.git
 ```
 
-Then place or symlink the repository into the skills directory used by your agent. Keep `SKILL.md` at the skill root.
+### 2. Place It In Your Agent's Skills Directory
+
+Copy or symlink the cloned `agent-evolution` directory into the skills directory used by your agent.
+
+The final shape should look like:
+
+```text
+skills/
+└── agent-evolution/
+    ├── SKILL.md
+    ├── references/
+    ├── adapters/
+    ├── scripts/
+    └── evals/
+```
+
+### 3. Start A Fresh Agent Session
+
+Many agents scan skill metadata when a new session starts. After installing, open a fresh session so the agent can read the `name` and `description` from `SKILL.md`.
+
+### 4. Verify
+
+Try this prompt:
+
+```text
+Use agent-evolution: remember that my writing style is direct and example-driven. Do not write files; just explain how you would handle this memory.
+```
+
+Expected behavior:
+
+```text
+Path: direct memory
+Validation: not required
+Destination: host agent user memory
+```
 
 If your skill manager supports GitHub installs, install this repository as a single skill.
+
+### Update
+
+If you installed with Git, update with:
+
+```bash
+git pull
+```
+
+Then start a fresh agent session if your agent scans skills only at session startup.
 
 ---
 
@@ -239,6 +292,7 @@ agent-evolution/
 ├── references/               # Detailed mechanisms loaded on demand
 │   ├── direct-memory.md
 │   ├── eval-loop.md
+│   ├── installation.md
 │   ├── promotion.md
 │   ├── pruning.md
 │   ├── reflection.md

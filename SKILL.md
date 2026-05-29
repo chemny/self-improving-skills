@@ -145,6 +145,7 @@ Use the adapter files only when the user asks how this should work in a specific
 - `adapters/codex.md`
 - `adapters/claude-code.md`
 - `adapters/openclaw.md`
+- `references/installation.md` when the user asks how to install this skill.
 
 ## Scripts
 
