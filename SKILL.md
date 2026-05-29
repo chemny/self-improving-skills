@@ -8,7 +8,7 @@ version: 0.1.0
 
 Use this skill to turn explicit user instructions, task summaries, corrections, repeated failures, and workflow insights into durable operating knowledge.
 
-This skill is self-contained. It does not require `self-improving`, `openclaw-self-improvement`, or `self-reflection` to be installed. Those skills can be treated as historical references only.
+This skill is self-contained. It replaces the main workflows of `self-improving`, `openclaw-self-improvement`, and `self-reflection` for preference memory, correction learning, task reflection, eval-backed rule promotion, and pruning. Those skills can be treated as historical references or migration sources only.
 
 ## Core loop
 
@@ -20,6 +20,20 @@ Signal -> Triage -> Route -> Store -> Validate -> Promote -> Apply -> Prune
 
 Use the smallest useful part of the loop. Do not force every memory through a slow eval process.
 
+When another self-improvement skill could also apply, prefer this skill as the single controller. Do not ask the other skill to own the workflow unless the user explicitly asks to inspect or migrate it.
+
+## Self-start model
+
+Use three startup levels:
+
+```text
+metadata-trigger             the host loads this skill when SKILL.md description matches the user request
+opportunistic-self-start     once loaded, run lightweight evolution checks after significant work, corrections, tool failures, or repeated issues
+scheduled-reflection-adapter optional host automation; only active when explicitly configured outside this skill
+```
+
+Read `references/self-start.md` before changing startup behavior or proposing background reflection.
+
 ## When to use
 
 Use this skill when:
@@ -30,6 +44,7 @@ Use this skill when:
 - A tool, environment, or workflow issue should be recorded for future use.
 - A proposed rule could affect future behavior and needs validation, promotion, or pruning.
 - The user asks for a cross-agent improvement workflow for Codex, Claude Code, or OpenClaw.
+- The user asks whether to replace, consolidate, migrate, or deprecate another memory, reflection, or self-improvement skill.
 
 ## Fast path: direct memory
 
@@ -42,6 +57,18 @@ When the user explicitly asks the agent to remember a preference, writing style,
 Do not require repeated observation for explicit user preferences.
 
 Read `references/direct-memory.md` when the user wants to record important preferences or style rules.
+
+## Memory layers
+
+Use layered storage when the user asks for organized memory, memory stats, forgetting, export, or conflict handling:
+
+```text
+hot     short active rules and explicit preferences
+warm    project, domain, tool, or workflow notes loaded on demand
+cold    archived, obsolete, superseded, or audit-only history
+```
+
+Keep this as a routing model, not a hard-coded path. Read `references/memory-layers.md` when managing memory growth, conflicts, stats, export, or migration from another memory skill.
 
 ## Reflection path
 
@@ -58,6 +85,10 @@ When a task ends or the user asks for a summary, produce a normal task closeout 
 ```
 
 Read `references/reflection.md` for the full extraction format.
+
+Do not claim background or cron reflection is active unless the host environment has actually configured it. If scheduled reflection is requested, treat it as an optional host automation and read `references/reflection.md` before proposing it.
+
+When this skill is already loaded, run a lightweight reflection check after significant multi-step work, user correction, obvious tool failure, or repeated issue even if the user did not say "remember" or "reflect". Keep it silent if there is no specific future-useful lesson.
 
 ## Triage
 
@@ -127,6 +158,20 @@ Read `references/promotion.md` before editing an agent instruction file, tool no
 Periodically remove or demote rules that are stale, duplicated, vague, unused, or conflicting.
 
 Read `references/pruning.md` for the cleanup checklist.
+
+## Replacement and migration
+
+When replacing an older self-updating skill:
+
+1. Inventory what it owns: triggers, storage paths, scripts, cron jobs, and promoted rules.
+2. Classify each item as keep, migrate, archive, or remove.
+3. Move only durable user preferences, active rules, tool gotchas, and validated workflows.
+4. Do not copy noisy logs, stale reflections, credentials, or host-specific paths into the public skill.
+5. After migration, mark the old skill as deprecated or remove it only with user confirmation.
+
+Read `references/replacement-strategy.md` before consolidating or removing another self-improvement skill.
+
+Use `references/migration-checklist.md` to audit old skills before moving content. Use `references/deprecation-plan.md` when narrowing, archiving, or removing old skills after migration.
 
 ## Safety
 

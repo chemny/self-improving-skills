@@ -18,6 +18,7 @@ eval_loop
 promotion
 pruning
 cross_agent_workflow
+replacement
 ```
 
 ## Registry
@@ -32,6 +33,7 @@ cross_agent_workflow
 | evolution_language | 进化; 沉淀; 形成机制; 变成规则 | promotion | promoted | Core topic for this skill | 2026-05-29 | May route to promotion or eval depending on risk |
 | repeated_failure | 重复犯错; 已经出现三次; 老问题; 又犯了 | eval_loop | promoted | Repeated failures should trigger eval loop | 2026-05-29 | Use binary evals before promotion |
 | trigger_governance | 触发词; 关键词; 为什么没触发; 误触发; 触发机制 | pruning | active | Added after user asked for add/modify/delete lifecycle | 2026-05-29 | Read trigger-evolution.md |
+| replacement_consolidation | 替换掉其他自我更新 skill; 合并 self-improving; 迁移 self-reflection; 废弃旧记忆 skill; consolidate memory skills | replacement | active | Added after user chose Agent Evolution as the single controller | 2026-05-29 | Read replacement-strategy.md; do not delete old skills without confirmation |
 | vague_handle_it | 处理一下; 看着办; 你心里有数 | direct_memory | candidate | Ambiguous; may be execution or preference depending on context | 2026-05-29 | Do not promote without confirmation |
 
 ## Removed or deprecated

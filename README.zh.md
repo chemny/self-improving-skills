@@ -79,6 +79,52 @@ Agent Evolution 做的事情，就是把这个思路落成一个可执行的 ski
 | 规则晋升 | 稳定经验变成长期执行规则 | 写入宿主 Agent 支持的 instruction / tool notes / skill / memory |
 | 清理机制 | 规则变多后重复、冲突、过期 | keep / merge / demote / archive / delete |
 | 触发词治理 | 不同用户表达习惯不同 | add / modify / merge / demote / remove |
+| 自启动检查 | 重大任务、用户纠正、工具失败、重复问题 | 不依赖记忆关键词的轻量进化检查 |
+
+---
+
+## 它如何启动？
+
+Agent Evolution 使用三层启动机制：
+
+```text
+metadata-trigger
+  宿主 Agent 根据 SKILL.md description 匹配用户请求后加载 skill。
+
+opportunistic-self-start
+  一旦 skill 已加载，在重大任务完成、用户纠正、工具失败、重复问题后，自动做轻量进化检查。
+
+scheduled-reflection-adapter
+  可选宿主自动化。只有平台配置了 cron、heartbeat 或定时任务时才生效。
+```
+
+也就是说，它不会假装安装后默认后台运行；但它会在已加载后尽量减少对关键词的依赖，并且可以在宿主环境支持时接入真正的定时反思。
+
+---
+
+## 替代哪些旧机制？
+
+Agent Evolution 的目标是成为自我更新类 skill 的唯一主入口，而不是再增加一个并行系统。
+
+它吸收了几个常见自我更新 skill 的核心能力：
+
+| 来源机制 | 吸收什么 | 不继承什么 |
+|---|---|---|
+| `self-improving` | 分层记忆、纠错学习、冲突处理、memory stats | 固定 `~/self-improving/` 路径 |
+| `openclaw-self-improvement` | `.learnings` 分类、功能缺口、eval loop | OpenClaw 专属路径和 `SOUL.md` 等假设 |
+| `self-reflection` | 有边界的会话复盘、只提取可执行 insight | 默认 cron / session 扫描假设 |
+| `Memory` | 大规模分类记忆和索引 | 把所有小偏好都放入并行记忆库 |
+| `ontology` | 需要结构化实体关系时的图谱思路 | 用图谱保存简单写作风格或短规则 |
+
+替代原则：
+
+```text
+agent-evolution 负责决策和治理。
+宿主 Agent 的 memory / instruction / tool notes / skill references 负责存储。
+其它旧 skill 只作为迁移来源或历史参考。
+```
+
+这可以避免多个 skill 同时处理「记住」「反思」「纠错」导致职责重叠。
 
 ---
 
@@ -114,6 +160,14 @@ Agent Evolution 把一次反馈拆成 7 步。
 
 ```text
 Signal → Triage → Route → Store → Validate → Promote → Prune
+```
+
+同时使用三层记忆模型，防止记忆越来越乱：
+
+```text
+HOT   明确偏好、短规则、当前有效 guardrail
+WARM  项目规则、领域经验、工具坑、实验记录
+COLD  归档、过期、被替代、仅供审计的历史
 ```
 
 ### 1. Signal：捕捉信号
@@ -408,12 +462,17 @@ agent-evolution/
 ├── README.zh.md              # 中文 README
 ├── references/               # 按需读取的机制文档
 │   ├── direct-memory.md
+│   ├── deprecation-plan.md
 │   ├── eval-loop.md
 │   ├── installation.md
+│   ├── memory-layers.md
+│   ├── migration-checklist.md
 │   ├── promotion.md
 │   ├── pruning.md
 │   ├── reflection.md
+│   ├── replacement-strategy.md
 │   ├── safety.md
+│   ├── self-start.md
 │   ├── storage-routing.md
 │   ├── triage.md
 │   ├── trigger-evolution.md

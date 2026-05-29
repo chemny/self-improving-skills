@@ -72,6 +72,52 @@ References:
 | Rule promotion | Stable operating lessons | Short rules for the host agent's instruction, tool-notes, skill, or memory files |
 | Pruning | Stale, duplicated, vague, or conflicting rules | Keep, merge, demote, archive, or delete decision |
 | Trigger governance | New, missed, or noisy trigger phrases | Add, modify, merge, demote, or remove trigger patterns |
+| Self-start checks | Significant work, corrections, tool failures, repeated issues | Lightweight evolution checks without requiring a memory keyword |
+
+---
+
+## How It Starts
+
+Agent Evolution uses three startup levels:
+
+```text
+metadata-trigger
+  The host loads the skill when SKILL.md description matches the user request.
+
+opportunistic-self-start
+  Once loaded, the skill runs lightweight evolution checks after significant work, corrections, tool failures, or repeated issues.
+
+scheduled-reflection-adapter
+  Optional host automation. Only active when a platform configures cron, heartbeat, or another scheduled job.
+```
+
+This means the skill does not pretend to run in the background by default. It maximizes self-improvement once loaded, and it can support real scheduled reflection when the host environment provides that capability.
+
+---
+
+## What It Replaces
+
+Agent Evolution is intended to be the single controller for self-updating agent behavior, not another parallel memory system.
+
+It absorbs the useful parts of several common self-improvement patterns:
+
+| Source pattern | What Agent Evolution keeps | What it avoids |
+|---|---|---|
+| `self-improving` | Layered memory, correction learning, conflict handling, memory stats | A fixed `~/self-improving/` public assumption |
+| `openclaw-self-improvement` | `.learnings` categories, feature gaps, eval loops | OpenClaw-only paths and universal `SOUL.md` assumptions |
+| `self-reflection` | Bounded session review and actionable insight quality bars | Claiming cron/session scanning exists by default |
+| `Memory` | Large organized storage and indexes when needed | Sending every small preference into a parallel memory store |
+| `ontology` | Structured graph storage for entities and relations when needed | Using graph storage for simple style rules |
+
+Replacement principle:
+
+```text
+Agent Evolution owns decision and governance.
+The host agent's memory, instruction files, tool notes, and skill references own storage.
+Older self-updating skills are migration sources or historical references.
+```
+
+This prevents multiple skills from competing to handle "remember", "reflect", and "learn from this correction".
 
 ---
 
@@ -100,6 +146,14 @@ The point is not to remember everything. The point is to route the right signal 
 ## The Update Mechanism
 
 Agent Evolution uses different paths for different kinds of learning.
+
+It also uses a three-layer memory model to prevent memory growth from becoming noise:
+
+```text
+HOT   explicit preferences, short active rules, current guardrails
+WARM  project rules, domain lessons, tool gotchas, experiments
+COLD  archived, stale, superseded, or audit-only history
+```
 
 ### 1. Direct Memory
 
@@ -291,12 +345,17 @@ agent-evolution/
 ├── README.zh.md              # Chinese README
 ├── references/               # Detailed mechanisms loaded on demand
 │   ├── direct-memory.md
+│   ├── deprecation-plan.md
 │   ├── eval-loop.md
 │   ├── installation.md
+│   ├── memory-layers.md
+│   ├── migration-checklist.md
 │   ├── promotion.md
 │   ├── pruning.md
 │   ├── reflection.md
+│   ├── replacement-strategy.md
 │   ├── safety.md
+│   ├── self-start.md
 │   ├── storage-routing.md
 │   ├── triage.md
 │   ├── trigger-evolution.md
