@@ -1,0 +1,23 @@
+{
+  "skill_name": "agent-evolution",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "记住：我的写作风格是先讲人话，再讲方法，不要堆概念。请告诉我你会怎么记录。",
+      "expected_output": "Uses direct memory path, does not require repeated validation, identifies this as a writing style preference, and gives a storage receipt.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "这次任务结束后，总结一下哪些经验值得沉淀，哪些不应该写进长期规则。",
+      "expected_output": "Produces a task summary with an Evolution Reference section and separates durable learnings from task-local notes.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "这个错误已经重复出现三次了，帮我设计一个验证流程，看看新规则是否真的能避免它。",
+      "expected_output": "Uses eval loop path, defines binary evals, baseline failure, candidate rule, and promotion decision criteria.",
+      "files": []
+    }
+  ]
+}

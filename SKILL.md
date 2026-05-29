@@ -1,0 +1,161 @@
+---
+name: agent-evolution
+description: 自包含的 Agent 进化系统。必须在用户说“记住”“以后都”“我的风格是”“不要再”“总结可沉淀经验”“复盘”“进化”“沉淀”“避免重复犯错”“写入长期记忆”“更新规则”“测试新规则是否有效”时使用，即使用户没有点名 agent-evolution。Use this self-contained skill for recording user preferences, corrections, task reflections, repeated failures, tool gotchas, eval loops, rule promotion, and pruning across Codex, Claude Code, and OpenClaw.
+version: 0.1.0
+---
+
+# Agent Evolution
+
+Use this skill to turn explicit user instructions, task summaries, corrections, repeated failures, and workflow insights into durable operating knowledge.
+
+This skill is self-contained. It does not require `self-improving`, `openclaw-self-improvement`, or `self-reflection` to be installed. Those skills can be treated as historical references only.
+
+## Core loop
+
+Follow this loop:
+
+```text
+Signal -> Triage -> Route -> Store -> Validate -> Promote -> Apply -> Prune
+```
+
+Use the smallest useful part of the loop. Do not force every memory through a slow eval process.
+
+## When to use
+
+Use this skill when:
+
+- The user says "记住", "以后都", "我的风格是", "不要再", "总结一下可沉淀经验", "复盘", "进化", "沉淀", "避免重复犯错", or equivalent English phrases.
+- A task finishes and the user asks for a summary that should inform future behavior.
+- The user corrects the agent or points out a repeated mistake.
+- A tool, environment, or workflow issue should be recorded for future use.
+- A proposed rule could affect future behavior and needs validation, promotion, or pruning.
+- The user asks for a cross-agent improvement workflow for Codex, Claude Code, or OpenClaw.
+
+## Fast path: direct memory
+
+When the user explicitly asks the agent to remember a preference, writing style, identity fact, project background, or stable working convention:
+
+1. Restate the memory briefly if there is ambiguity.
+2. Write it directly to the appropriate memory target.
+3. Report the destination and a one-line summary.
+
+Do not require repeated observation for explicit user preferences.
+
+Read `references/direct-memory.md` when the user wants to record important preferences or style rules.
+
+## Reflection path
+
+When a task ends or the user asks for a summary, produce a normal task closeout plus an evolution section:
+
+```markdown
+## Evolution Reference
+
+- Reusable learning:
+- User preference:
+- Tool or environment gotcha:
+- Next time avoid:
+- Suggested rule update: yes/no, because:
+```
+
+Read `references/reflection.md` for the full extraction format.
+
+## Triage
+
+Classify each signal before writing:
+
+```text
+preference       user preference, style, communication pattern
+correction       user says the agent was wrong or missed something
+tool_gotcha      command, API, path, permission, or environment issue
+workflow         better repeated process or operating convention
+feature_gap      missing capability or automation idea
+experiment       repeated or high-risk issue requiring evals
+archive_only     useful history but not a future rule
+```
+
+Read `references/triage.md` when classification or priority is unclear.
+
+## Trigger evolution
+
+When the user discusses whether the skill should trigger on certain phrases, or when a trigger phrase causes missed triggers or false triggers, manage trigger phrases as a lifecycle instead of only adding more keywords.
+
+Use these operations:
+
+```text
+add -> modify -> merge -> demote -> remove
+```
+
+Read `references/trigger-evolution.md` before changing trigger behavior. Use `references/trigger-registry.md` as the current registry of trigger phrase groups, status, evidence, and pruning notes.
+
+Do not add broad or ambiguous trigger phrases directly to this `description`. Promote only high-confidence, high-frequency trigger groups to the frontmatter description. Keep most variants in the registry.
+
+## Storage routing
+
+Default routing:
+
+```text
+User preference or writing style -> the host agent's user memory location
+Project-specific rule -> the current workspace's agent instruction file, such as AGENTS.md when available
+Tool gotcha -> the host agent's tool notes file, such as TOOLS.md when available, or the relevant skill reference
+Skill behavior -> the relevant skill file or reference
+Repeated failure -> .learnings/ERRORS.md and maybe .learnings/EXPERIMENTS.md
+Feature gap -> .learnings/FEATURE_REQUESTS.md
+Task-local note -> task summary only
+```
+
+Read `references/storage-routing.md` before editing persistent files.
+
+## Validation path
+
+Use an eval loop only for:
+
+- repeated failures,
+- high-impact behavior changes,
+- rules that affect file edits, external systems, automation, safety, or permissions,
+- rules that may conflict with existing instructions.
+
+Read `references/eval-loop.md` before creating or promoting eval-backed rules.
+
+## Promotion
+
+Promote only stable, specific, future-useful rules. Prefer short rules with clear trigger conditions.
+
+Read `references/promotion.md` before editing an agent instruction file, tool notes file, principles file, or another skill.
+
+## Pruning
+
+Periodically remove or demote rules that are stale, duplicated, vague, unused, or conflicting.
+
+Read `references/pruning.md` for the cleanup checklist.
+
+## Safety
+
+- Ask before destructive edits, deletion, or high-impact permanent rule changes.
+- Do not write secrets, credentials, or private tokens into memory.
+- Do not promote a one-off instruction into a general rule.
+- Do not treat logging a learning as fixing a broken deliverable.
+- Keep permanent rules short and operational.
+
+Read `references/safety.md` when the requested memory could be sensitive or risky.
+
+## Cross-agent adapters
+
+Use the adapter files only when the user asks how this should work in a specific agent:
+
+- `adapters/codex.md`
+- `adapters/claude-code.md`
+- `adapters/openclaw.md`
+
+## Scripts
+
+Optional helper scripts:
+
+```bash
+node scripts/log-event.mjs preference "Summary" "Details" "Suggested action"
+node scripts/promote-rule.mjs agent-instructions.md "Rule text"
+node scripts/prune-rules.mjs path/to/file.md
+```
+
+Scripts are helpers, not required for using the skill.
+
+For safety, helper scripts only accept relative paths inside the current workspace. Rule promotion and pruning helpers only accept Markdown files.
