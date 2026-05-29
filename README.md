@@ -294,15 +294,6 @@ High-impact rules should be confirmed before writing, especially rules that affe
 
 ---
 
-## Limitations
-
-- It cannot make an unreliable agent perfect. It gives the agent a better improvement protocol.
-- It does not automatically know where every host stores memory; it routes to the host-supported location.
-- It should not promote broad rules without review.
-- It intentionally avoids storing secrets.
-
----
-
 ## License
 
 MIT
