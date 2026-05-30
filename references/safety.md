@@ -11,6 +11,8 @@ Use this guidance before storing or promoting sensitive or high-impact instructi
 
 ## Confirm first
 
+🔴 CHECKPOINT / 🛑 STOP: Get explicit user confirmation before writing or promoting rules in this section.
+
 Ask before writing rules that:
 
 - allow deletion or overwrite without review,
@@ -18,6 +20,15 @@ Ask before writing rules that:
 - change automation behavior,
 - weaken confirmation requirements,
 - apply globally across all projects or agents.
+
+## Failure mode table
+
+| If this happens | Do this |
+|---|---|
+| The memory includes an API key, password, private token, cookie, or recovery code | Refuse to store the raw value |
+| The user wants a risky rule that bypasses review | Narrow the rule and ask for confirmation |
+| The rule changes deletion, overwrite, external-system, automation, or global behavior | 🔴 CHECKPOINT / 🛑 STOP: confirm first and prefer eval-backed validation |
+| The lesson is only useful for the current task | Keep it in the task summary, not long-term memory |
 
 ## Safer alternatives
 

@@ -34,6 +34,19 @@ scheduled-reflection-adapter optional host automation; only active when explicit
 
 Read `references/self-start.md` before changing startup behavior or proposing background reflection.
 
+## Failure modes
+
+Use these hard stops before storing, promoting, or automating:
+
+| If this happens | Do this |
+|---|---|
+| Scheduled reflection is not configured and verified | Do not claim background reflection is active |
+| A trigger phrase is broad or ambiguous | Record it as `candidate`; do not promote it to frontmatter |
+| A memory contains secrets or sensitive third-party data | Refuse to store the raw value; store only a safe abstraction when useful |
+| A proposed rule affects deletion, overwrite, permissions, external systems, or global behavior | 🔴 CHECKPOINT / 🛑 STOP: ask for explicit confirmation or run evals before promotion |
+| An old skill may contain unique user data or active rules | 🔴 CHECKPOINT / 🛑 STOP: migrate or archive first; do not delete |
+| A lesson is vague, one-off, or not future-useful | Keep it in the task summary or discard it; do not promote |
+
 ## When to use
 
 Use this skill when:
@@ -151,6 +164,8 @@ Read `references/eval-loop.md` before creating or promoting eval-backed rules.
 
 Promote only stable, specific, future-useful rules. Prefer short rules with clear trigger conditions.
 
+🔴 CHECKPOINT / 🛑 STOP: Before promoting a rule that changes deletion, overwrite, permissions, external systems, automation, confirmation requirements, or global behavior, ask for explicit confirmation or validate it with `references/eval-loop.md`.
+
 Read `references/promotion.md` before editing an agent instruction file, tool notes file, principles file, or another skill.
 
 ## Pruning
@@ -172,6 +187,8 @@ When replacing an older self-updating skill:
 Read `references/replacement-strategy.md` before consolidating or removing another self-improvement skill.
 
 Use `references/migration-checklist.md` to audit old skills before moving content. Use `references/deprecation-plan.md` when narrowing, archiving, or removing old skills after migration.
+
+🔴 CHECKPOINT / 🛑 STOP: Never archive, remove, or deprecate an installed skill until unique data, active rules, scripts, and scheduled automations have been checked and the user has confirmed the action.
 
 ## Safety
 

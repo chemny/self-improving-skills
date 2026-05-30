@@ -82,6 +82,8 @@ Only show "no durable lesson found" when the user explicitly asked for reflectio
 
 This level is not automatic by installing the skill. It requires host automation such as cron, heartbeat, scheduled job, or an agent platform feature.
 
+🔴 CHECKPOINT / 🛑 STOP: Before enabling scheduled reflection, confirm the host, schedule, readable session scope, write targets, and review policy with the user.
+
 If configured, the scheduled job should:
 
 1. Read only recent bounded session material.
@@ -113,3 +115,13 @@ When a host supports session logs:
 - Do not store secrets or sensitive third-party facts.
 - Do not promote high-impact rules without confirmation or eval evidence.
 - Prefer candidate notes over strong rules when confidence is low.
+
+## Failure mode table
+
+| If this happens | Do this |
+|---|---|
+| The skill is not loaded | Do not assume opportunistic self-start can run |
+| No durable lesson is found | Stay silent unless the user explicitly asked for reflection |
+| A scheduled job is not configured | Do not claim background reflection is active |
+| Session logs are huge or sensitive | Read only bounded recent material, or skip |
+| A self-start insight would change high-impact behavior | 🔴 CHECKPOINT / 🛑 STOP: ask for confirmation or create an eval candidate |

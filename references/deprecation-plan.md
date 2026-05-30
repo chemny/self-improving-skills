@@ -38,6 +38,8 @@ removed
 5. Archive the old skill outside the active skills directory.
 6. Delete only after the user confirms there is no remaining unique value.
 
+🔴 CHECKPOINT / 🛑 STOP: Pause before steps 5 and 6. Show the archive path, migrated content, skipped content, and restore plan before changing or removing the old skill.
+
 ## Deprecation note
 
 Use this note when editing an old skill:
@@ -68,6 +70,15 @@ Before archiving or removing:
 - Search for local data files under the skill directory.
 - Check whether other skills reference this skill by name or path.
 - Confirm no scheduled automation depends on it.
+
+## Failure mode table
+
+| If this happens | Do this |
+|---|---|
+| The old skill has unique preferences or active rules | Migrate them before archiving |
+| Another skill references the old skill | Keep it, narrow it, or update the reference first |
+| A scheduled automation depends on the old skill | Do not archive until the automation is migrated or disabled |
+| The user has not explicitly approved removal | Do not remove; leave it narrowed or deprecated |
 
 ## Removal receipt
 
