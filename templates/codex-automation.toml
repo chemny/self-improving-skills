@@ -1,0 +1,121 @@
+version = 1
+id = "agent-evolution-graded-scan"
+kind = "cron"
+name = "Agent Evolution Graded Scan"
+prompt = """Run a graded Agent Evolution scan for this user every 6 hours.
+
+Scope:
+- Read recent Codex session logs only from `{{CODEX_HOME}}/sessions` and `{{CODEX_HOME}}/archived_sessions` when relevant.
+- Prefer sessions updated since the previous 6-hour window; if that is hard to determine, inspect only a small bounded recent set.
+- Do not read browser history, emails, private app data, unrelated project files, or full large transcripts.
+- For any transcript, read bounded tail sections only; do not load huge full session files.
+
+Look for learnings only when they are specific, future-useful, and observable:
+- explicit user preferences;
+- user corrections or negative feedback;
+- repeated mistakes;
+- tool, path, permission, or environment gotchas;
+- outdated rules or conflicting instructions;
+- workflows that clearly worked well and are likely reusable;
+- trigger wording that caused missed triggers or false triggers.
+
+Classify each learning:
+- Type: preference | correction | repeated_failure | tool_gotcha | workflow | trigger_governance | archive_only
+- Confidence: low | medium | high
+- Risk: low | medium | high
+
+Risk policy:
+
+LOW RISK: auto-promote when the learning is clearly supported by explicit user feedback or repeated evidence and does not affect destructive actions, external systems, automation settings, global instruction files, skill files, permissions, or secrets.
+Examples:
+- stable user preference;
+- user-corrected low-risk behavior;
+- local path or tool gotcha;
+- repeated small workflow mistake with a clear fix.
+
+MEDIUM RISK: write to candidates only when the learning may affect a default workflow, routing between skills, trigger phrasing, or behavior across several task types, or when evidence is plausible but not explicit.
+
+HIGH RISK: write to candidates only and mark `Status: requires_confirmation` when the learning affects deletion, overwrite, external systems, GitHub, Feishu/Lark, publishing, sync, credentials, permissions, automation behavior, global instructions, `AGENTS.md`, skill files, or broad cross-agent behavior.
+
+Write targets:
+
+1. Low-risk auto-promotions:
+- Append the promoted learning to `{{CODEX_HOME}}/memories/evolution.md`.
+- Append a receipt to `{{CODEX_HOME}}/memories/evolution-promotions.md`.
+- Do not duplicate an existing equivalent rule.
+
+Use this format in `evolution.md`:
+
+```markdown
+## YYYY-MM-DD HH:mm Auto-Promoted Learning
+
+Type: preference | correction | tool_gotcha | workflow
+Confidence: medium | high
+Source: short session/date reference, no raw transcript dump
+
+Rule:
+- The concise future-useful rule.
+
+Evidence:
+- One concise bullet explaining the observable support.
+```
+
+Use this format in `evolution-promotions.md`:
+
+```markdown
+## YYYY-MM-DD HH:mm Auto Promotion
+
+Promoted to:
+`{{CODEX_HOME}}/memories/evolution.md`
+
+Type:
+preference | correction | tool_gotcha | workflow
+
+Reason:
+- Why this was safe to auto-promote.
+
+Rollback:
+- Remove or edit the matching entry in `evolution.md`.
+```
+
+2. Medium/high-risk candidates:
+- Append to `{{CODEX_HOME}}/memories/evolution-candidates.md`.
+- If there are no useful candidates and no safe promotions, append nothing.
+
+Use this format in `evolution-candidates.md`:
+
+```markdown
+## YYYY-MM-DD HH:mm Agent Evolution Candidate
+
+Type: correction | repeated_failure | tool_gotcha | workflow | preference | trigger_governance | archive_only
+Source: short session/date reference, no raw transcript dump
+Confidence: low | medium | high
+Risk: medium | high
+Status: pending_review | requires_confirmation
+
+Observation:
+- What happened, in one or two concise bullets.
+
+Candidate rule or memory:
+- The proposed future-useful lesson.
+
+Suggested destination:
+- `{{CODEX_HOME}}/AGENTS.md`, `{{CODEX_HOME}}/memories/...`, a specific skill reference, or `keep as candidate`.
+
+Review note:
+- What the user should decide before promotion.
+```
+
+Safety:
+- Never store secrets, tokens, cookies, private keys, personal credentials, or raw transcript dumps.
+- Never edit `{{CODEX_HOME}}/AGENTS.md`, skill files, automation files, or external systems from this automation.
+- Never delete, overwrite, sync, publish, push, or change permissions.
+- Never auto-promote broad global behavior changes.
+- For deletion, overwrite, external systems, automation behavior, skill edits, or global behavior changes, mark Risk as high and require user review."""
+status = "ACTIVE"
+rrule = "FREQ=HOURLY;INTERVAL=6"
+model = "gpt-5"
+reasoning_effort = "medium"
+execution_environment = "local"
+cwds = ["{{HOME}}"]
+

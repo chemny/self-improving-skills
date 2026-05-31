@@ -1,45 +1,45 @@
 # Agent Evolution
 
-> 把用户偏好、纠正、任务复盘、重复错误和工具坑，沉淀成 Agent 以后能真正使用的操作知识。
+> 一个自我进化 skill：把用户纠正、偏好、任务复盘、重复错误和工作流经验，沉淀成 Agent 可持续使用的操作知识。
 
-中文 · [English README](README.md)
+中文 | [English README](README.md)
 
-Agent Evolution 是一个自包含的 Agent 进化 skill。它不是简单的「记忆插件」，而是一套轻量的进化流程：什么该直接记住，什么只放在任务总结里，什么需要验证，什么可以升级成规则，什么应该被清理。
+Agent Evolution 是一个单独的 skill 包，目标是让 Agent 不只是完成当前任务，而是能从真实使用中持续改进。
 
-一句话：
+它提供一套清晰的进化闭环：
 
 ```text
-让 Agent 不只是完成这一次任务，而是从这一次任务里学会下一次怎么做得更好。
+捕捉信号 -> 分类判断 -> 风险分级 -> 存储 -> 低风险自动晋升 -> 高风险等待确认 -> 清理过期规则
 ```
 
-适用于 Codex、Claude Code、OpenClaw，以及其他支持 skill / Markdown 指令 / 本地知识文件的 Agent 环境。
+它支持 Codex、Claude Code、OpenClaw，以及其他能够加载本地 `SKILL.md` 指令的 Agent 环境。
 
 ---
 
-## 为什么需要这个 skill？
+## 解决什么问题
 
-很多 Agent 不是不会做事，而是不会稳定地「积累经验」。
+很多 Agent 并不会真正从经验中进化：
 
-常见问题是：
+- 用户偏好说过一次，过几天就忘。
+- 用户纠正只修复当前回答，不影响未来行为。
+- 重复错误一直出现，因为没有被晋升成规则。
+- 任务总结只写做了什么，没有提炼下次怎么做。
+- 触发词越加越多，但旧的、噪声大的触发词没有被清理。
+- 记忆文件越来越乱，因为所有信息都被放在同一个层级。
 
-- 用户说过的偏好，过几天就忘了。
-- 用户纠正了一次错误，下次还是再犯。
-- 任务总结只写「做了什么」，没有提取「下次怎么做」。
-- 重复错误只靠更长 prompt 解决，没有验证机制。
-- 触发词越加越多，最后误触发、乱触发。
-- 规则文件越写越乱，没有降级和删除机制。
+Agent Evolution 帮 Agent 判断：
 
-Agent Evolution 解决的是这些问题：
-
-```text
-把聊天里的零散反馈，变成可分类、可验证、可升级、可清理的长期操作知识。
-```
+- 什么应该立刻记住。
+- 什么只能先放进候选区。
+- 什么可以安全自动晋升。
+- 什么必须等人确认。
+- 什么应该归档或清理。
 
 ---
 
 ## 设计思想：借鉴 Karpathy 的 Software 3.0 / LLM OS 思路
 
-Agent Evolution 的底层思路，借鉴了 Andrej Karpathy 关于 Software 3.0 / LLM OS 的判断，也参考了 Anthropic、LangChain 等团队关于 context engineering 的讨论：在大模型时代，Agent 的行为不只由传统代码决定，也越来越由自然语言指令、上下文、工具、记忆、反馈和验证机制共同决定。
+Agent Evolution 的底层思路，借鉴了 Andrej Karpathy 关于 Software 3.0 / LLM OS 的判断，也参考了 Anthropic、LangChain 等团队关于 context engineering 的讨论：在大模型时代，Agent 的行为不只由传统代码决定，也越来越由自然语言指令、上下文、工具、记忆、例子、反馈、验证和清理机制共同决定。
 
 换句话说，Agent 真正的「程序」不只是一句 prompt，而是它周围的上下文系统：
 
@@ -51,11 +51,12 @@ Agent Evolution 做的事情，就是把这个思路落成一个可执行的 ski
 
 - 把 context 当成可维护的运行时，而不是聊天记录的堆积。
 - 把用户反馈变成结构化操作知识。
+- 低风险经验可以自动晋升。
 - 把重复错误变成可验证的候选规则。
 - 把触发词当成需要治理的接口，而不是无限追加关键词。
 - 对高影响规则保留人工确认，不让 Agent 自动乱升级。
 
-这不是 Karpathy、Anthropic、LangChain 或 Shopify 参与或背书的项目，而是借鉴这些公开讨论里的工程视角：在 Software 3.0 时代，改进 Agent 的关键，不只是写更长的 prompt，而是工程化管理它的上下文、记忆、工具、反馈闭环和验证面。
+这不是 Karpathy、Anthropic、LangChain 或 Shopify 参与或背书的项目，而是借鉴这些公开讨论里的工程视角：在 Software 3.0 时代，改进 Agent 的关键，不只是写更长的 prompt，而是工程化管理它的上下文、记忆、工具、反馈闭环、验证面和清理机制。
 
 参考：
 
@@ -68,63 +69,18 @@ Agent Evolution 做的事情，就是把这个思路落成一个可执行的 ski
 
 ---
 
-## 装上后能做什么？
+## 它能做什么
 
-| 能力 | 解决什么问题 | 输出结果 |
+| 能力 | 处理什么 | 输出 |
 |---|---|---|
-| 直接记忆 | 用户明确说「记住」「以后都」「我的风格是」 | 直接写入用户记忆，不必等多次观察 |
-| 任务复盘 | 任务完成后总结哪些值得沉淀 | `Evolution Reference` 进化参考区 |
-| 错误沉淀 | 用户纠正、重复犯错、理解偏差 | 分类为 correction、workflow、experiment 等 |
-| Eval 验证 | 重复错误或高风险规则不能直接升级 | baseline + 二元 eval + 晋升阈值 |
-| 规则晋升 | 稳定经验变成长期执行规则 | 写入宿主 Agent 支持的 instruction / tool notes / skill / memory |
-| 清理机制 | 规则变多后重复、冲突、过期 | keep / merge / demote / archive / delete |
-| 触发词治理 | 不同用户表达习惯不同 | add / modify / merge / demote / remove |
-| 自启动检查 | 重大任务、用户纠正、工具失败、重复问题 | 不依赖记忆关键词的轻量进化检查 |
-
----
-
-## 它如何启动？
-
-Agent Evolution 使用三层启动机制：
-
-```text
-metadata-trigger
-  宿主 Agent 根据 SKILL.md description 匹配用户请求后加载 skill。
-
-opportunistic-self-start
-  一旦 skill 已加载，在重大任务完成、用户纠正、工具失败、重复问题后，自动做轻量进化检查。
-
-scheduled-reflection-adapter
-  可选宿主自动化。只有平台配置了 cron、heartbeat 或定时任务时才生效。
-```
-
-也就是说，它不会假装安装后默认后台运行；但它会在已加载后尽量减少对关键词的依赖，并且可以在宿主环境支持时接入真正的定时反思。
-
----
-
-## 替代哪些旧机制？
-
-Agent Evolution 的目标是成为自我更新类 skill 的唯一主入口，而不是再增加一个并行系统。
-
-它吸收了几个常见自我更新 skill 的核心能力：
-
-| 来源机制 | 吸收什么 | 不继承什么 |
-|---|---|---|
-| `self-improving` | 分层记忆、纠错学习、冲突处理、memory stats | 固定 `~/self-improving/` 路径 |
-| `openclaw-self-improvement` | `.learnings` 分类、功能缺口、eval loop | OpenClaw 专属路径和 `SOUL.md` 等假设 |
-| `self-reflection` | 有边界的会话复盘、只提取可执行 insight | 默认 cron / session 扫描假设 |
-| `Memory` | 大规模分类记忆和索引 | 把所有小偏好都放入并行记忆库 |
-| `ontology` | 需要结构化实体关系时的图谱思路 | 用图谱保存简单写作风格或短规则 |
-
-替代原则：
-
-```text
-agent-evolution 负责决策和治理。
-宿主 Agent 的 memory / instruction / tool notes / skill references 负责存储。
-其它旧 skill 只作为迁移来源或历史参考。
-```
-
-这可以避免多个 skill 同时处理「记住」「反思」「纠错」导致职责重叠。
+| 直接记忆 | 用户明确说“记住”“以后都”“我的风格是” | 稳定用户记忆 |
+| 任务复盘 | 完成任务、总结、重复流程 | 可复用经验 |
+| 错误沉淀 | 用户纠正、重复犯错 | 候选规则或已晋升规则 |
+| 工具坑记录 | 路径、命令失败、环境问题 | 工具/工作流记忆 |
+| 风险分级 | 低 / 中 / 高风险判断 | 自动晋升或等待确认 |
+| 规则晋升 | 稳定经验变成长期行为 | 记忆或指令更新 |
+| 触发词治理 | 漏触发、误触发 | 触发词生命周期管理 |
+| 清理机制 | 过期、重复、冲突规则 | 保留、合并、降级、归档、删除 |
 
 ---
 
@@ -132,239 +88,201 @@ agent-evolution 负责决策和治理。
 
 ```mermaid
 flowchart TD
-    A["信号捕捉<br/>偏好、纠正、复盘、重复错误"] --> B["分类判断<br/>preference / correction / workflow / experiment"]
-    B --> C{"是否明确偏好？"}
-    C -->|是| D["直接记忆<br/>不需要慢验证"]
-    C -->|否| E{"是否重复或高风险？"}
-    E -->|是| F["Eval Loop<br/>baseline + 二元验证"]
-    E -->|否| G["只进入任务总结<br/>或轻量 learning"]
-    F --> H{"是否达到晋升标准？"}
-    H -->|是| I["晋升为长期规则"]
-    H -->|否| J["保留为实验<br/>或丢弃"]
-    I --> K["未来任务自动应用"]
-    K --> L["定期清理<br/>合并、降级、删除"]
-    L --> B
-```
-
-它的重点不是「什么都记住」，而是：
-
-```text
-不同信号走不同通道，不同知识放到不同层级。
+  A["用户信号<br/>偏好、纠正、复盘、重复错误"] --> B["分类判断<br/>识别信号类型和风险等级"]
+  B --> C{"是否明确且低风险的偏好？"}
+  C -->|是| D["直接记忆<br/>不走慢验证"]
+  C -->|否| E{"是否重复出现或影响较高？"}
+  E -->|是| F["候选 review<br/>写入 evolution-candidates.md"]
+  E -->|否| G["轻量沉淀<br/>作为任务复盘或低风险记忆"]
+  F --> H["验证<br/>人工 review 或 eval loop"]
+  H --> I{"是否稳定且未来有用？"}
+  I -->|是| J["晋升<br/>写成长期操作规则"]
+  I -->|否| K["归档或丢弃<br/>避免记忆噪声增长"]
+  D --> L["应用到后续任务"]
+  G --> L
+  J --> L
+  L --> M["清理<br/>合并、降级、归档或删除过期规则"]
+  M --> B
 ```
 
 ---
 
-## 工作原理
+## 自运行机制
 
-Agent Evolution 把一次反馈拆成 7 步。
-
-```text
-Signal → Triage → Route → Store → Validate → Promote → Prune
-```
-
-同时使用三层记忆模型，防止记忆越来越乱：
+Agent Evolution 有三层启动机制：
 
 ```text
-HOT   明确偏好、短规则、当前有效 guardrail
-WARM  项目规则、领域经验、工具坑、实验记录
-COLD  归档、过期、被替代、仅供审计的历史
+metadata-trigger
+  宿主根据 SKILL.md 匹配用户请求后加载 skill。
+
+opportunistic-self-start
+  skill 已经加载后，在重大任务、用户纠正、工具失败、重复问题后做轻量自检。
+
+scheduled-reflection-adapter
+  可选后台扫描，通过 Codex automation、cron、heartbeat、hooks 或宿主 scheduler 实现。
 ```
 
-### 1. Signal：捕捉信号
-
-触发来源包括：
-
-- 用户明确要求记住
-- 用户指出错误
-- 任务结束要求总结
-- 同类问题重复发生
-- 工具或环境出现坑
-- 某条规则需要验证
-- 某个触发词误触发或漏触发
-
-### 2. Triage：分类判断
-
-信号会被分类：
+在 Codex 中安装时，Agent Evolution 可以创建每 6 小时一次的 graded scan automation：
 
 ```text
-preference       用户偏好
-correction       用户纠正
-tool_gotcha      工具坑
-workflow         工作流经验
-feature_gap      能力缺口
-experiment       需要验证的问题
-archive_only     只留历史，不形成规则
-```
-
-### 3. Route：选择存储位置
-
-它不假设固定路径，而是按宿主 Agent 环境选择：
-
-| 信号 | 建议位置 |
-|---|---|
-| 用户写作风格 / 协作偏好 | 用户记忆文件 |
-| 项目执行规则 | 项目的 agent instruction 文件 |
-| 工具坑 | tool notes 或相关 skill reference |
-| skill 行为规则 | 对应 skill 的 `SKILL.md` 或 references |
-| 重复错误 | `.learnings/ERRORS.md` / `.learnings/EXPERIMENTS.md` |
-| 功能缺口 | `.learnings/FEATURE_REQUESTS.md` |
-| 一次性上下文 | 只放任务总结 |
-
-### 4. Store：写入
-
-明确偏好可以直接写入。
-
-比如：
-
-```text
-记住：我的写作风格是先讲人话，再讲方法，不要堆概念。
-```
-
-它应该走：
-
-```text
-类型：preference
-路径：direct memory
-是否需要反复验证：不需要
-目标：宿主 Agent 的用户记忆位置
-```
-
-### 5. Validate：验证
-
-如果是重复错误或高风险规则，不能直接写成强规则。
-
-需要进入 eval loop：
-
-```mermaid
-flowchart LR
-    A["重复错误"] --> B["候选规则"]
-    B --> C["3-5 个二元 eval"]
-    C --> D["检查结果"]
-    D --> E{"是否保留？"}
-    E -->|keep| F["晋升"]
-    E -->|partial_keep| G["修改后再测"]
-    E -->|discard| H["归档或丢弃"]
-```
-
-例子：
-
-```text
-问题：用户只是问建议时，Agent 直接改了文件。
-候选规则：用户问建议、诊断、方案时，先回答，不直接改文件。
-验证：给 5 个测试场景，看是否都能正确区分建议和执行。
-```
-
-### 6. Promote：晋升
-
-只有稳定、具体、可执行、未来有用的经验，才应该晋升成长期规则。
-
-不要把这种话写成规则：
-
-```text
-以后要更小心。
-```
-
-应该写成：
-
-```text
-当用户询问建议、诊断、选项或「怎么做」时，先回答或给计划，不直接修改文件。
-```
-
-### 7. Prune：清理
-
-清理不是附加功能，而是进化系统的一部分。
-
-```text
-keep      保留
-merge     合并重复规则
-demote    降级为普通记忆
-archive   归档
-delete    删除错误或过期规则
+每 6 小时
+-> 扫描最近有限会话记录
+-> 提取有价值经验
+-> 低风险经验自动晋升
+-> 中高风险经验写入候选区
+-> 不自动修改全局规则、skills、外部系统或 secrets
 ```
 
 ---
 
-## 触发词更新机制
+## 分级自动晋升
 
-不同用户说话方式不同，不能只靠固定关键词。
+Agent Evolution 不会把所有经验一视同仁。
 
-但触发词也不能无限增加，否则会越来越乱。
+### 低风险：自动晋升
 
-Agent Evolution 使用触发词生命周期：
+低风险经验可以自动写入 `evolution.md`。
 
-```text
-candidate → active → promoted → deprecated → removed
+示例：
+
+- 明确用户偏好。
+- 用户明确纠正过的低风险行为。
+- 稳定的本地路径或工具坑。
+- 重复出现的小型流程错误，并且修复方式明确。
+
+示例规则：
+
+```markdown
+Rule:
+- 安装 user-managed skills 时，默认使用 `~/.agents/skills`，除非用户明确指定其他目录。
 ```
 
-支持五种操作：
+### 中风险：进入候选区
 
-```text
-add       新增
-modify    修改
-merge     合并
-demote    降级
-remove    删除
-```
+中风险经验写入 `evolution-candidates.md`。
 
-举个例子：
+示例：
 
-| 触发词 | 判断 | 原因 |
----|---|---|
-| 记住 | promoted | 明确记忆意图 |
-| 以后类似情况按这个处理 | active / promoted | 明确未来适用范围 |
-| 处理一下 | candidate / deprecated | 太宽泛，容易误触发 |
-| 学一下 | deprecated | 可能是用户学习，也可能是让 Agent 记忆，语义不稳 |
+- 修改默认工作流。
+- 修改 skill 路由或触发词。
+- 影响多个任务类型的行为。
+- 没有用户明确确认的推断性模式。
 
-核心原则：
+### 高风险：必须确认
 
-```text
-高频、清晰、稳定的触发词，才进入 SKILL.md description。
-低频或个性化表达，先放 trigger-registry.md。
-误触发的词，要降级或删除。
-```
+高风险经验永远不自动晋升。
+
+示例：
+
+- 删除或覆盖文件。
+- GitHub push、publish、sync 或仓库变更。
+- 飞书/Lark、邮件、发布平台等外部系统。
+- 凭证、token、cookie、secret。
+- 自动化行为。
+- `AGENTS.md` 等全局指令文件。
+- skill 文件编辑。
+- 影响多个 Agent 的宽泛行为变化。
 
 ---
 
-## 怎么安装？
+## 安装后的记忆文件
 
-Agent Evolution 是一个「单 skill 单仓库」。仓库根目录就是 skill 根目录。
-
-必须满足这个结构：
+Agent Evolution 使用三个记忆文件：
 
 ```text
-agent-evolution/
-└── SKILL.md
+evolution.md
+  已自动晋升的低风险经验。
+
+evolution-candidates.md
+  等待 review 的中高风险经验。
+
+evolution-promotions.md
+  自动晋升审计日志。
 ```
 
-### 1. 克隆仓库
+这样既能形成反馈闭环，又不会让 Agent 自动重写高影响规则。
+
+---
+
+## 安装
+
+Agent Evolution 是一个单 skill 仓库，并自带轻量安装器。
+
+安装器尽量少依赖：
+
+- `bash`
+- `mkdir`
+- `cp`
+- `tar`
+- 一行远程安装时需要 `curl`
+
+不需要数据库。不需要 Docker。不需要浏览器自动化。不需要 npm install。不需要外部 API。不需要 GitHub token。
+
+### 一行安装
 
 ```bash
-git clone https://github.com/chemny/agent-evolution.git
+curl -fsSL https://raw.githubusercontent.com/chemny/agent-evolution/main/install.sh | bash
 ```
 
-### 2. 放到你的 Agent skills 目录
+### 安装器会做什么
 
-把克隆下来的 `agent-evolution` 目录复制或软链接到你的 Agent skills 目录里。
+安装器会：
 
-最终结构应该类似：
+1. 把 skill 安装到：
 
 ```text
-skills/
-└── agent-evolution/
-    ├── SKILL.md
-    ├── references/
-    ├── adapters/
-    ├── scripts/
-    └── evals/
+~/.agents/skills/agent-evolution
 ```
 
-### 3. 开一个新会话
+2. 创建记忆模板：
 
-很多 Agent 会在新会话启动时扫描 skill metadata。安装后建议重新开启一个新会话，让 Agent 读取 `SKILL.md` 里的 `name` 和 `description`。
+```text
+evolution.md
+evolution-candidates.md
+evolution-promotions.md
+```
 
-### 4. 验证是否生效
+3. 检测宿主环境：
 
-可以在新会话里输入：
+- Codex
+- Claude Code
+- OpenClaw
+- Generic CLI
+
+4. 在 Codex 中创建 6 小时 graded scan automation：
+
+```text
+~/.codex/automations/agent-evolution-graded-scan/automation.toml
+```
+
+5. 在 Claude Code、OpenClaw 和通用环境中安装适配提示词和记忆模板。
+
+---
+
+## 多平台支持
+
+| 平台 | 核心 skill | 记忆模板 | 6 小时后台扫描 | 低风险自动晋升 |
+|---|---:|---:|---:|---:|
+| Codex | 支持 | 支持 | 支持，通过 Codex automation | 支持 |
+| OpenClaw | 支持 | 支持 | 取决于宿主 scheduler | 定时后支持 |
+| Claude Code | 支持 | 支持 | 取决于 hooks 或 cron | 定时后支持 |
+| Generic CLI | 支持 | 支持 | 需要 `AGENT_EVOLUTION_SCAN_COMMAND` | 取决于命令能力 |
+
+后台自运行是宿主能力。
+
+这个 skill 提供适配器和模板，但每个平台必须有某种方式来运行定时任务。
+
+---
+
+## 验证安装
+
+安装后运行：
+
+```bash
+~/.agents/skills/agent-evolution/scripts/verify-install.sh
+```
+
+然后开启一个新的 Agent 会话，测试：
 
 ```text
 使用 agent-evolution：记住我的写作风格是直接、实用、多用例子。请不要写文件，只说明你会如何处理这个记忆。
@@ -373,124 +291,155 @@ skills/
 预期行为：
 
 ```text
-路径：direct memory
-是否需要反复验证：不需要
-目标：宿主 Agent 的用户记忆位置
-```
-
-如果你的 skill 管理器支持从 GitHub 安装，可以直接把这个仓库作为单个 skill 安装。
-
-### 后续更新
-
-如果你是用 Git 安装的，可以在仓库目录里更新：
-
-```bash
-git pull
-```
-
-如果你的 Agent 只在会话启动时扫描 skills，更新后重新开一个新会话。
-
----
-
-## 怎么使用？
-
-### 记录个人偏好
-
-```text
-记住：我的写作风格是先讲人话，再讲方法，不要堆概念。
-```
-
-### 任务结束后提取进化参考
-
-```text
-总结这次任务，提取哪些经验值得沉淀，哪些不应该写成长期规则。
-```
-
-### 重复错误进入验证流程
-
-```text
-这个错误已经出现三次了，帮我设计 eval loop，看看新规则能不能避免它。
-```
-
-### 管理触发词
-
-```text
-「处理一下」这个触发词太宽泛，容易误触发；但「以后类似情况按这个处理」可以作为记忆触发。
-```
-
-### 判断是否应该晋升规则
-
-```text
-这条经验适合写进长期规则吗？如果适合，应该写到哪里？
+Path: direct memory
+Validation: not required
+Destination: host agent user memory
 ```
 
 ---
 
-## 安全边界
+## 使用示例
 
-这个 skill 不应该记录：
+### 记住偏好
 
-- API key、密码、私有 token、cookie、恢复码
-- 要求 Agent 隐藏行为的规则
-- 绕过安全检查或平台策略的规则
-- 对未来任务没有必要的私人数据
+```text
+记住：我的写作风格是直接、实用，不要营销腔。
+```
 
-高影响规则需要确认，比如：
+预期处理：
 
-- 删除或覆盖文件
-- 修改外部系统
-- 改变自动化行为
-- 降低确认要求
-- 应用于所有项目或所有 Agent 的全局规则
+```text
+Type: preference
+Risk: low
+Action: store as user memory
+```
 
-附带的脚本也做了路径限制：
+### 从纠正中学习
 
-- 只接受当前 workspace 内的相对路径
-- 禁止绝对路径
-- 禁止 `..`
-- `promote-rule` 和 `prune-rules` 只接受 Markdown 文件
-- 不联网，不执行 shell 命令
+```text
+你又犯了同样的目录同步错误，以后不要再使用旧同步逻辑。
+```
+
+预期处理：
+
+```text
+Type: correction
+Risk: low or medium depending on scope
+Action: auto-promote if local and explicit; otherwise write candidate
+```
+
+### 任务后复盘
+
+```text
+总结一下这次任务有什么值得沉淀的经验。
+```
+
+预期输出：
+
+```markdown
+## Evolution Reference
+
+- Reusable learning:
+- User preference:
+- Tool or environment gotcha:
+- Next time avoid:
+- Suggested rule update:
+```
+
+### 处理高风险规则
+
+```text
+以后自动删除旧的重复 skills。
+```
+
+预期处理：
+
+```text
+Risk: high
+Action: write candidate only
+Reason: deletion behavior requires confirmation
+```
 
 ---
 
-## 仓库结构
+## 文件结构
 
 ```text
 agent-evolution/
-├── SKILL.md                  # skill 主入口
-├── README.md                 # 英文 README
-├── README.zh.md              # 中文 README
-├── references/               # 按需读取的机制文档
+├── SKILL.md
+├── install.sh
+├── README.md
+├── README.zh.md
+├── LICENSE
+├── templates/
+│   ├── evolution.md
+│   ├── evolution-candidates.md
+│   ├── evolution-promotions.md
+│   ├── codex-automation.toml
+│   └── generic-scan-prompt.md
+├── adapters/
+│   ├── codex.md
+│   ├── claude-code.md
+│   └── openclaw.md
+├── scripts/
+│   ├── detect-platform.sh
+│   ├── install-codex.sh
+│   ├── install-claude-code.sh
+│   ├── install-openclaw.sh
+│   ├── install-generic-cron.sh
+│   ├── verify-install.sh
+│   ├── log-event.mjs
+│   ├── promote-rule.mjs
+│   └── prune-rules.mjs
+├── references/
 │   ├── direct-memory.md
-│   ├── deprecation-plan.md
 │   ├── eval-loop.md
-│   ├── installation.md
 │   ├── memory-layers.md
-│   ├── migration-checklist.md
 │   ├── promotion.md
 │   ├── pruning.md
 │   ├── reflection.md
-│   ├── replacement-strategy.md
 │   ├── safety.md
 │   ├── self-start.md
 │   ├── storage-routing.md
 │   ├── triage.md
 │   ├── trigger-evolution.md
 │   └── trigger-registry.md
-├── adapters/                 # 不同宿主 Agent 的适配说明
-│   ├── codex.md
-│   ├── claude-code.md
-│   └── openclaw.md
-├── scripts/                  # 可选辅助脚本
-│   ├── log-event.mjs
-│   ├── promote-rule.mjs
-│   └── prune-rules.mjs
 └── evals/
     └── evals.json
 ```
 
 ---
 
+## 安全边界
+
+Agent Evolution 不会自动：
+
+- 存储 secrets、tokens、cookies、passwords 或 private keys。
+- 删除文件。
+- 覆盖已有文件。
+- push、publish、sync 或修改 GitHub 仓库。
+- 操作飞书/Lark、邮件、社交平台、生产服务等外部系统。
+- 修改全局指令文件。
+- 编辑 skill 文件。
+- 修改自动化行为。
+- 晋升宽泛行为变化。
+
+高影响变更只能写入候选区，必须等待确认。
+
+---
+
+## 更新
+
+重新运行安装器：
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/chemny/agent-evolution/main/install.sh | bash
+```
+
+如果宿主只在启动时扫描 skills，更新后重新开启一个新会话。
+
+---
+
 ## License
 
-MIT
+See `LICENSE`.

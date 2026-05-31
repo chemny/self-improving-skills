@@ -1,38 +1,45 @@
 # Agent Evolution
 
-> Turn corrections, preferences, task reflections, and repeated failures into durable agent operating knowledge.
+> A self-evolving skill that turns user corrections, preferences, task reflections, repeated mistakes, and workflow lessons into durable agent operating knowledge.
 
-[中文 README](README.zh.md) · English
+[中文 README](README.zh.md) | English
 
-Agent Evolution is a self-contained skill for agents that need to improve over time without turning their memory files into a noisy pile of one-off notes.
+Agent Evolution is a single-skill package for agents that need to improve over time without depending on a pile of manual notes or fragile prompt tweaks.
 
 It gives your agent a practical evolution loop:
 
 ```text
-Capture signal -> Triage intent -> Route storage -> Validate risky changes -> Promote stable rules -> Prune stale rules
+Capture signal -> Triage -> Risk-grade -> Store -> Auto-promote safe learnings -> Review risky changes -> Prune stale rules
 ```
 
-It works with Codex, Claude Code, OpenClaw, and other agents that can load skill-style Markdown instructions.
+It supports Codex, Claude Code, OpenClaw, and generic agent environments that can load local `SKILL.md`-style instructions.
 
 ---
 
-## Why Use This Skill?
+## What Problem It Solves
 
-Most agents make the same mistakes because learnings stay trapped in chat history:
+Most agents do not truly improve from experience:
 
 - User preferences are mentioned once, then forgotten.
-- Corrections are treated as local fixes, not future rules.
-- Task summaries describe what happened, but do not extract reusable lessons.
-- Repeated failures become bigger prompts instead of tested guardrails.
-- Trigger phrases keep getting added, but old or noisy ones are never removed.
+- Corrections fix the current answer but do not affect future behavior.
+- Repeated mistakes keep happening because no rule is promoted.
+- Task summaries describe what happened but do not extract reusable lessons.
+- Trigger phrases keep growing, but stale or noisy triggers are never cleaned up.
+- Memory files become noisy because everything is stored at the same level.
 
-Agent Evolution turns those moments into an explicit operating system for improvement.
+Agent Evolution gives the agent a structured way to decide:
+
+- What should be remembered immediately.
+- What should be only a candidate.
+- What is safe to auto-promote.
+- What must require human confirmation.
+- What should be archived or pruned.
 
 ---
 
 ## Design Philosophy
 
-Agent Evolution is inspired by Andrej Karpathy's Software 3.0 / LLM OS framing and the broader context engineering discussion: LLM behavior is increasingly shaped by natural-language instructions, context, tools, memory, and evaluation, not only by traditional code.
+Agent Evolution is inspired by Andrej Karpathy's Software 3.0 / LLM OS framing and the broader context engineering discussion: LLM behavior is increasingly shaped by natural-language instructions, context, tools, memory, examples, feedback, evaluation, and pruning, not only by traditional code.
 
 In that framing, an agent's real "program" is not a single prompt. It is the context system around the model:
 
@@ -44,11 +51,12 @@ Agent Evolution turns that idea into a small, operational skill:
 
 - Context is treated as an editable runtime, not a pile of notes.
 - User feedback becomes structured operating knowledge.
+- Low-risk learnings can be promoted automatically.
 - Repeated failures become eval-backed rule candidates.
 - Trigger phrases evolve through a lifecycle instead of growing forever.
 - Human confirmation stays in the loop for high-impact changes.
 
-This project is not affiliated with or endorsed by Andrej Karpathy, Anthropic, LangChain, or Shopify. It borrows the engineering lens: in the Software 3.0 era, improving an agent means engineering its context, memory, tools, feedback loops, and validation surfaces.
+This project is not affiliated with or endorsed by Andrej Karpathy, Anthropic, LangChain, or Shopify. It borrows the engineering lens: in the Software 3.0 era, improving an agent means engineering its context, memory, tools, feedback loops, validation surfaces, and pruning mechanisms.
 
 References:
 
@@ -63,61 +71,16 @@ References:
 
 ## What It Can Do
 
-| Capability | What it handles | Output |
+| Capability | What It Handles | Output |
 |---|---|---|
-| Direct memory | "Remember this", "My style is...", "Always..." | A stable user memory without slow repeated validation |
-| Task reflection | End-of-task summaries | `Evolution Reference` with reusable learnings and next-time cautions |
-| Error learning | User corrections and repeated mistakes | Classified correction, workflow rule, or eval candidate |
-| Eval loop | Repeated or risky failures | Binary evals, baseline failure, candidate rule, promotion threshold |
-| Rule promotion | Stable operating lessons | Short rules for the host agent's instruction, tool-notes, skill, or memory files |
-| Pruning | Stale, duplicated, vague, or conflicting rules | Keep, merge, demote, archive, or delete decision |
-| Trigger governance | New, missed, or noisy trigger phrases | Add, modify, merge, demote, or remove trigger patterns |
-| Self-start checks | Significant work, corrections, tool failures, repeated issues | Lightweight evolution checks without requiring a memory keyword |
-
----
-
-## How It Starts
-
-Agent Evolution uses three startup levels:
-
-```text
-metadata-trigger
-  The host loads the skill when SKILL.md description matches the user request.
-
-opportunistic-self-start
-  Once loaded, the skill runs lightweight evolution checks after significant work, corrections, tool failures, or repeated issues.
-
-scheduled-reflection-adapter
-  Optional host automation. Only active when a platform configures cron, heartbeat, or another scheduled job.
-```
-
-This means the skill does not pretend to run in the background by default. It maximizes self-improvement once loaded, and it can support real scheduled reflection when the host environment provides that capability.
-
----
-
-## What It Replaces
-
-Agent Evolution is intended to be the single controller for self-updating agent behavior, not another parallel memory system.
-
-It absorbs the useful parts of several common self-improvement patterns:
-
-| Source pattern | What Agent Evolution keeps | What it avoids |
-|---|---|---|
-| `self-improving` | Layered memory, correction learning, conflict handling, memory stats | A fixed `~/self-improving/` public assumption |
-| `openclaw-self-improvement` | `.learnings` categories, feature gaps, eval loops | OpenClaw-only paths and universal `SOUL.md` assumptions |
-| `self-reflection` | Bounded session review and actionable insight quality bars | Claiming cron/session scanning exists by default |
-| `Memory` | Large organized storage and indexes when needed | Sending every small preference into a parallel memory store |
-| `ontology` | Structured graph storage for entities and relations when needed | Using graph storage for simple style rules |
-
-Replacement principle:
-
-```text
-Agent Evolution owns decision and governance.
-The host agent's memory, instruction files, tool notes, and skill references own storage.
-Older self-updating skills are migration sources or historical references.
-```
-
-This prevents multiple skills from competing to handle "remember", "reflect", and "learn from this correction".
+| Direct memory | Explicit user preferences such as "remember this" or "always do X" | Stable user memory |
+| Task reflection | Completed work, summaries, repeated workflows | Reusable lessons |
+| Error learning | User corrections and repeated mistakes | Candidate or promoted rule |
+| Tool gotchas | Paths, command failures, environment issues | Tool/workflow memory |
+| Risk grading | Low / medium / high risk classification | Auto-promote or review |
+| Rule promotion | Stable lessons become durable behavior | Memory or instruction update |
+| Trigger governance | Missed triggers and false triggers | Trigger lifecycle management |
+| Pruning | Stale, duplicate, or conflicting rules | Keep, merge, demote, archive, remove |
 
 ---
 
@@ -125,162 +88,201 @@ This prevents multiple skills from competing to handle "remember", "reflect", an
 
 ```mermaid
 flowchart TD
-    A["User signal<br/>preference, correction, summary, failure"] --> B["Triage<br/>preference, correction, tool gotcha, workflow, feature gap, experiment"]
-    B --> C{"Safe direct memory?"}
-    C -->|Yes| D["Store in user memory<br/>no repeated validation needed"]
-    C -->|No| E{"Repeated or high risk?"}
-    E -->|Yes| F["Eval loop<br/>baseline + binary checks"]
-    E -->|No| G["Task summary only<br/>or lightweight learning"]
-    F --> H{"Passes promotion threshold?"}
-    H -->|Yes| I["Promote stable rule"]
-    H -->|No| J["Keep as experiment<br/>or discard"]
-    I --> K["Apply in future tasks"]
-    K --> L["Prune stale or noisy rules"]
-    L --> B
+  A["User signal<br/>preference, correction, reflection, repeated failure"] --> B["Triage<br/>classify signal type and risk"]
+  B --> C{"Explicit low-risk preference?"}
+  C -->|Yes| D["Direct memory<br/>store without slow validation"]
+  C -->|No| E{"Repeated or high impact?"}
+  E -->|Yes| F["Candidate review<br/>write to evolution-candidates.md"]
+  E -->|No| G["Lightweight learning<br/>keep as task reflection or low-risk memory"]
+  F --> H["Validate<br/>manual review or eval loop"]
+  H --> I{"Stable and useful?"}
+  I -->|Yes| J["Promote<br/>write durable operating rule"]
+  I -->|No| K["Archive or discard<br/>avoid noisy memory growth"]
+  D --> L["Apply in future work"]
+  G --> L
+  J --> L
+  L --> M["Prune<br/>merge, demote, archive, or remove stale rules"]
+  M --> B
 ```
-
-The point is not to remember everything. The point is to route the right signal to the right level.
 
 ---
 
-## The Update Mechanism
+## Self-Running Mechanism
 
-Agent Evolution uses different paths for different kinds of learning.
-
-It also uses a three-layer memory model to prevent memory growth from becoming noise:
+Agent Evolution has three startup levels:
 
 ```text
-HOT   explicit preferences, short active rules, current guardrails
-WARM  project rules, domain lessons, tool gotchas, experiments
-COLD  archived, stale, superseded, or audit-only history
+metadata-trigger
+  The host loads the skill when SKILL.md matches the user request.
+
+opportunistic-self-start
+  Once loaded, the skill runs lightweight checks after significant work, corrections, tool failures, or repeated issues.
+
+scheduled-reflection-adapter
+  Optional background scan through Codex automation, cron, heartbeat, hooks, or another host scheduler.
 ```
 
-### 1. Direct Memory
+When installed in Codex, Agent Evolution can create a 6-hour graded scan automation:
 
-Explicit user preferences should not wait for three repeated observations.
+```text
+Every 6 hours
+-> scan recent bounded session logs
+-> extract useful learnings
+-> auto-promote low-risk learnings
+-> write medium/high-risk items to review candidates
+-> never auto-edit global rules, skills, external systems, or secrets
+```
+
+---
+
+## Risk-Graded Auto-Promotion
+
+Agent Evolution does not treat all learnings equally.
+
+### Low Risk: Auto-Promote
+
+Low-risk learnings can be automatically written to `evolution.md`.
+
+Examples:
+
+- Explicit user preferences.
+- User-corrected low-risk behavior.
+- Stable local path or tool gotchas.
+- Repeated small workflow mistakes with clear fixes.
 
 Example:
 
-```text
-Remember: my writing style is direct, practical, and avoids marketing language.
-```
-
-Expected behavior:
-
-```text
-Type: preference
-Path: direct memory
-Validation: not required
-Destination: host agent's user memory location
-```
-
-### 2. Reflection Extraction
-
-At the end of a meaningful task, the agent should separate normal closeout from reusable evolution material.
-
 ```markdown
-## Evolution Reference
-
-- Reusable learning:
-- User preference:
-- Tool or environment gotcha:
-- Next time avoid:
-- Suggested rule update: yes/no, because:
+Rule:
+- When installing user-managed skills, default to `~/.agents/skills` unless the user explicitly names another directory.
 ```
 
-### 3. Eval Loop
+### Medium Risk: Candidate Review
 
-Repeated failures and high-impact behavior changes should be tested before becoming strong rules.
+Medium-risk learnings go to `evolution-candidates.md`.
 
-```mermaid
-flowchart LR
-    A["Repeated failure"] --> B["Candidate rule"]
-    B --> C["3-5 binary evals"]
-    C --> D["Run / inspect outcomes"]
-    D --> E{"Keep?"}
-    E -->|keep| F["Promote"]
-    E -->|partial| G["Revise rule"]
-    E -->|discard| H["Archive experiment"]
-```
+Examples:
 
-### 4. Trigger Evolution
+- Changes to default workflow.
+- Skill routing or trigger phrasing changes.
+- Behavior that affects several task types.
+- Inferred patterns without explicit user confirmation.
 
-Trigger phrases are not just appended forever. They have a lifecycle:
+### High Risk: Requires Confirmation
 
-```text
-candidate -> active -> promoted -> deprecated -> removed
-```
+High-risk learnings are never auto-promoted.
 
-Supported operations:
+Examples:
 
-```text
-add
-modify
-merge
-demote
-remove
-```
-
-This prevents the skill from becoming over-eager as more trigger phrases accumulate.
+- File deletion or overwrite behavior.
+- GitHub push, publish, sync, or repository changes.
+- Feishu/Lark, email, posting, or other external systems.
+- Credentials, tokens, cookies, secrets.
+- Automation behavior.
+- Global instruction files such as `AGENTS.md`.
+- Skill file edits.
+- Broad cross-agent behavior changes.
 
 ---
 
-## Storage Routing
+## Installed Memory Files
 
-Agent Evolution is host-neutral. It does not assume one fixed memory path.
+Agent Evolution uses three memory files:
 
-| Signal | Preferred destination |
-|---|---|
-| User preference or writing style | Host agent's user memory |
-| Workspace behavior rule | Host-supported agent instruction file |
-| Tool gotcha | Tool notes file or relevant skill reference |
-| Skill-specific behavior | That skill's `SKILL.md` or reference files |
-| Repeated failure | `.learnings/ERRORS.md` and possibly `.learnings/EXPERIMENTS.md` |
-| Feature gap | `.learnings/FEATURE_REQUESTS.md` |
-| One-off task note | Task summary only |
+```text
+evolution.md
+  Low-risk auto-promoted learnings.
+
+evolution-candidates.md
+  Medium/high-risk learnings waiting for review.
+
+evolution-promotions.md
+  Audit log for automatic promotions.
+```
+
+This creates a feedback loop without letting the agent rewrite high-impact rules without review.
 
 ---
 
 ## Install
 
-Agent Evolution is published as a single-skill repository. The repository root is the skill root.
+Agent Evolution is a single-skill repository with a lightweight installer.
 
-Required shape:
+The installer uses minimal dependencies:
 
-```text
-agent-evolution/
-└── SKILL.md
-```
+- `bash`
+- `mkdir`
+- `cp`
+- `tar`
+- `curl` only for one-line remote install
 
-### 1. Clone
+No database. No Docker. No browser automation. No npm install. No external API. No GitHub token.
+
+### One-Line Install
 
 ```bash
-git clone https://github.com/chemny/agent-evolution.git
+curl -fsSL https://raw.githubusercontent.com/chemny/agent-evolution/main/install.sh | bash
 ```
 
-### 2. Place It In Your Agent's Skills Directory
+### What The Installer Does
 
-Copy or symlink the cloned `agent-evolution` directory into the skills directory used by your agent.
+The installer:
 
-The final shape should look like:
+1. Installs the skill to:
 
 ```text
-skills/
-└── agent-evolution/
-    ├── SKILL.md
-    ├── references/
-    ├── adapters/
-    ├── scripts/
-    └── evals/
+~/.agents/skills/agent-evolution
 ```
 
-### 3. Start A Fresh Agent Session
+2. Creates memory templates:
 
-Many agents scan skill metadata when a new session starts. After installing, open a fresh session so the agent can read the `name` and `description` from `SKILL.md`.
+```text
+evolution.md
+evolution-candidates.md
+evolution-promotions.md
+```
 
-### 4. Verify
+3. Detects supported host environments:
 
-Try this prompt:
+- Codex
+- Claude Code
+- OpenClaw
+- Generic CLI
+
+4. For Codex, creates a 6-hour graded scan automation:
+
+```text
+~/.codex/automations/agent-evolution-graded-scan/automation.toml
+```
+
+5. For Claude Code, OpenClaw, and generic environments, installs adapter prompts and memory templates.
+
+---
+
+## Platform Support
+
+| Platform | Core Skill | Memory Templates | 6-Hour Background Scan | Low-Risk Auto-Promotion |
+|---|---:|---:|---:|---:|
+| Codex | yes | yes | yes, via Codex automation | yes |
+| OpenClaw | yes | yes | if host scheduler is available | yes, when scheduled |
+| Claude Code | yes | yes | if hooks or cron are available | yes, when scheduled |
+| Generic CLI | yes | yes | only with `AGENT_EVOLUTION_SCAN_COMMAND` | command-dependent |
+
+Background self-running is a host capability.
+
+The skill provides adapters and templates, but each platform must have a way to run scheduled jobs.
+
+---
+
+## Verify Install
+
+After installation, run:
+
+```bash
+~/.agents/skills/agent-evolution/scripts/verify-install.sh
+```
+
+Then start a fresh agent session and test:
 
 ```text
 Use agent-evolution: remember that my writing style is direct and example-driven. Do not write files; just explain how you would handle this memory.
@@ -294,119 +296,150 @@ Validation: not required
 Destination: host agent user memory
 ```
 
-If your skill manager supports GitHub installs, install this repository as a single skill.
-
-### Update
-
-If you installed with Git, update with:
-
-```bash
-git pull
-```
-
-Then start a fresh agent session if your agent scans skills only at session startup.
-
 ---
 
 ## Usage Examples
 
-### Record a preference
+### Remember A Preference
 
 ```text
-Remember: my writing style is plain, direct, and example-driven.
+Remember: my writing style is direct, practical, and avoids marketing language.
 ```
 
-### Summarize a completed task
+Expected handling:
 
 ```text
-Summarize this task and extract the lessons worth keeping for future work.
+Type: preference
+Risk: low
+Action: store as user memory
 ```
 
-### Handle a repeated error
+### Learn From A Correction
 
 ```text
-This mistake happened three times. Design an eval loop to test whether a new rule prevents it.
+You made the same directory-sync mistake again. Do not use the old sync logic anymore.
 ```
 
-### Improve trigger behavior
+Expected handling:
 
 ```text
-The phrase "handle it" is too broad and causes false triggers. "Always handle similar cases this way" should be treated as a memory trigger. What should be added, modified, demoted, or removed?
+Type: correction
+Risk: low or medium depending on scope
+Action: auto-promote if local and explicit; otherwise write candidate
+```
+
+### Reflect After A Task
+
+```text
+Summarize what should be learned from this task.
+```
+
+Expected output:
+
+```markdown
+## Evolution Reference
+
+- Reusable learning:
+- User preference:
+- Tool or environment gotcha:
+- Next time avoid:
+- Suggested rule update:
+```
+
+### Handle A High-Risk Rule
+
+```text
+From now on, automatically delete old duplicate skills.
+```
+
+Expected handling:
+
+```text
+Risk: high
+Action: write candidate only
+Reason: deletion behavior requires confirmation
 ```
 
 ---
 
-## Repository Structure
+## File Structure
 
 ```text
 agent-evolution/
-├── SKILL.md                  # Main skill entry
-├── README.md                 # English README
-├── README.zh.md              # Chinese README
-├── references/               # Detailed mechanisms loaded on demand
+├── SKILL.md
+├── install.sh
+├── README.md
+├── README.zh.md
+├── LICENSE
+├── templates/
+│   ├── evolution.md
+│   ├── evolution-candidates.md
+│   ├── evolution-promotions.md
+│   ├── codex-automation.toml
+│   └── generic-scan-prompt.md
+├── adapters/
+│   ├── codex.md
+│   ├── claude-code.md
+│   └── openclaw.md
+├── scripts/
+│   ├── detect-platform.sh
+│   ├── install-codex.sh
+│   ├── install-claude-code.sh
+│   ├── install-openclaw.sh
+│   ├── install-generic-cron.sh
+│   ├── verify-install.sh
+│   ├── log-event.mjs
+│   ├── promote-rule.mjs
+│   └── prune-rules.mjs
+├── references/
 │   ├── direct-memory.md
-│   ├── deprecation-plan.md
 │   ├── eval-loop.md
-│   ├── installation.md
 │   ├── memory-layers.md
-│   ├── migration-checklist.md
 │   ├── promotion.md
 │   ├── pruning.md
 │   ├── reflection.md
-│   ├── replacement-strategy.md
 │   ├── safety.md
 │   ├── self-start.md
 │   ├── storage-routing.md
 │   ├── triage.md
 │   ├── trigger-evolution.md
 │   └── trigger-registry.md
-├── adapters/                 # Host-specific notes
-│   ├── codex.md
-│   ├── claude-code.md
-│   └── openclaw.md
-├── scripts/                  # Optional helper scripts
-│   ├── log-event.mjs
-│   ├── promote-rule.mjs
-│   └── prune-rules.mjs
 └── evals/
     └── evals.json
 ```
 
 ---
 
-## Helper Scripts
+## Safety Boundaries
 
-The scripts are optional. The skill works without them.
+Agent Evolution will not automatically:
 
-```bash
-node scripts/log-event.mjs preference "Writing style" "Prefer direct practical explanations"
-node scripts/promote-rule.mjs agent-instructions.md "When the user asks for advice, discuss before editing files."
-node scripts/prune-rules.mjs agent-instructions.md
-```
+- Store secrets, tokens, cookies, passwords, or private keys.
+- Delete files.
+- Overwrite existing files.
+- Push, publish, sync, or change GitHub repositories.
+- Operate external systems such as Feishu/Lark, email, social platforms, or production services.
+- Change global instruction files.
+- Edit skill files.
+- Change automation behavior.
+- Promote broad behavior changes without review.
 
-Safety constraints:
-
-- Paths must be relative to the current workspace.
-- Absolute paths are rejected.
-- Paths containing `..` are rejected.
-- Rule promotion and pruning only accept Markdown files.
-- Scripts do not make network requests and do not execute shell commands.
+High-impact changes are written to candidates and require confirmation.
 
 ---
 
-## Security Boundaries
+## Update
 
-Agent Evolution should not store:
+Re-run the installer:
 
-- API keys, passwords, private tokens, cookies, or recovery codes.
-- Instructions to hide actions from the user.
-- Rules that bypass safety checks or platform policies.
-- Private data that is not needed for future task performance.
+```bash
+curl -fsSL https://raw.githubusercontent.com/chemny/agent-evolution/main/install.sh | bash
+```
 
-High-impact rules should be confirmed before writing, especially rules that affect deletion, overwrites, external systems, automation, or global behavior.
+Then start a fresh agent session if your host scans skills only at startup.
 
 ---
 
 ## License
 
-MIT
+See `LICENSE`.
