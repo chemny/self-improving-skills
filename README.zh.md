@@ -2,7 +2,7 @@
 
 > 一个自我进化 skill：把用户纠正、偏好、任务复盘、重复错误和工作流经验，沉淀成 Agent 可持续使用的操作知识。
 
-中文 | [English README](README.md)
+中文 | [English](README.md)
 
 Agent Evolution 是一个单独的 skill 包，目标是让 Agent 不只是完成当前任务，而是能从真实使用中持续改进。
 
