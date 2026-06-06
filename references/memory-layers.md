@@ -37,6 +37,8 @@ Promote to HOT only when the item is:
 - validated by evals, or
 - necessary to prevent a repeated costly mistake.
 
+Use `memory-entry-standard.md` to record the validation state before promotion. A daily scan observation is not enough by itself unless it is an explicit low-risk user preference or stable low-risk fact.
+
 Demote or archive when the item is:
 
 - unused for a long time,
@@ -90,6 +92,7 @@ Attention needed:
 - Forget: confirm before deleting or weakening an active preference, rule, or guardrail.
 - Export: include only the user's requested memory scope; exclude secrets and unrelated private data.
 - Audit: search for duplicated, vague, stale, conflicting, or unsafe entries before adding more.
+- Prune: memory evolution may add, modify, merge, demote, archive, or delete entries; prefer archive before deletion unless unsafe data must be removed.
 
 ## Migration from other memory skills
 

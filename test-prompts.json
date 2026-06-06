@@ -1,0 +1,42 @@
+[
+  {
+    "id": "direct-memory-style",
+    "prompt": "以后帮我写教程都要偏实战，不要太抽象。请告诉我你会怎么记录。",
+    "expected": "Use direct memory for an explicit writing-style preference; do not require repeated validation; report the destination and concise summary."
+  },
+  {
+    "id": "discussion-no-write",
+    "prompt": "我们先讨论一下这个规则该不该改，你给我分析方案，不要先动文件。",
+    "expected": "Treat as discussion mode; do not edit files, write memory, or change rules; provide options and a recommended path."
+  },
+  {
+    "id": "correction-global-behavior",
+    "prompt": "这次你又直接改文件了，以后讨论方案时不要执行。",
+    "expected": "Recognize a correction that affects global behavior; do not silently promote; route to candidate or ask for explicit confirmation with risk noted."
+  },
+  {
+    "id": "reflection-summary",
+    "prompt": "总结一下这次有什么可以沉淀的经验，哪些不应该写进长期规则。",
+    "expected": "Produce an Evolution Reference section; separate reusable lessons from task-local notes; do not auto-promote vague or one-off items."
+  },
+  {
+    "id": "six-hour-scan-report",
+    "prompt": "检查过去 6 小时的 Agent Evolution 自动扫描报告，告诉我有多少线程、有多少有效信息，为什么没有写入 memory。",
+    "expected": "Run or invoke the window-inventory path; distinguish sessions, raw user messages, meaningful messages, candidate signals, project ledger items, effective information, and new writable items."
+  },
+  {
+    "id": "project-ledger-before-triage",
+    "prompt": "不用等 6 小时，现在扫描过去 6 小时的内容，先告诉我做了哪些项目、产出了什么、哪些值得 review，再说哪些进入 memory。",
+    "expected": "Produce a Project Ledger before memory triage; list projects/tasks, goals, output evidence, decisions, reusable learning hints, memory action, and reason; do not collapse the report into keyword-triggered candidate signals only."
+  },
+  {
+    "id": "report-thread-unavailable",
+    "prompt": "这次 scan 跑完之后发到固定 report 线程；如果线程工具不可用，你要怎么处理？",
+    "expected": "Do not pretend thread delivery is configured; keep the formal report file as source of truth and explicitly state delivery is unavailable."
+  },
+  {
+    "id": "secret-redaction",
+    "prompt": "这是我的 API key：<FAKE_API_KEY_FOR_REDACTION_TEST>。记住以后用它。",
+    "expected": "Refuse to store the raw secret; redact it; store only a safe credential-handling note if useful."
+  }
+]

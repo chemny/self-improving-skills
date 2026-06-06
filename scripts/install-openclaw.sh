@@ -8,8 +8,10 @@ target="$openclaw_home/agent-evolution"
 mkdir -p "$target/memories"
 cp "$skill_dir/templates/generic-scan-prompt.md" "$target/scan-prompt.md"
 
-for file in evolution.md evolution-candidates.md evolution-promotions.md; do
+for file in evolution.md evolution-candidates.md evolution-promotions.md evolution-scan-reports.md; do
   if [ ! -f "$target/memories/$file" ]; then
+    cp "$skill_dir/templates/$file" "$target/memories/$file"
+  elif ! grep -Eq '^## [0-9]{4}' "$target/memories/$file"; then
     cp "$skill_dir/templates/$file" "$target/memories/$file"
   fi
 done
@@ -23,4 +25,3 @@ If your OpenClaw setup has scheduler/session scanning support, use `scan-prompt.
 EOF
 
 echo "Installed OpenClaw adapter files: $target"
-

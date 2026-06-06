@@ -2,6 +2,8 @@
 
 Use reflection after meaningful tasks, after user feedback, or when the user asks for a summary that should improve future behavior.
 
+Reflection is not durable memory by itself. Convert only qualified items into the structured formats in `memory-entry-standard.md`.
+
 ## Closeout format
 
 Keep the normal task summary concise, then add:
@@ -43,6 +45,18 @@ Store a reflection item when at least one condition is true:
 - It records a non-obvious tool or environment fact.
 
 Keep it in the summary only when it is task-local or unlikely to recur.
+
+Before storage, classify it as:
+
+```text
+observation only
+candidate
+validated durable memory
+route to a specific skill or tool note
+reject / ignore
+```
+
+Do not store raw task summaries as memory entries. Store only concise operational rules with evidence, scope, validation state, and next action.
 
 ## Task summary template
 

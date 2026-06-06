@@ -2,6 +2,8 @@
 
 Use eval loops for repeated failures, risky rules, or workflow changes that should be tested before promotion.
 
+Use `memory-entry-standard.md` first to decide whether the item requires an eval loop, two successful applications, or explicit user confirmation.
+
 ## Format
 
 ```markdown
@@ -48,6 +50,10 @@ Promote when:
 - The rule is specific and concise.
 - The rule does not conflict with higher-priority instructions.
 - The user has confirmed it if it is high-impact.
+- The candidate's validation state can be updated to `eval_passed` or an equivalent validated state.
+
+Do not promote a workflow or skill rule just because it appeared in a scan. It must pass the required validation threshold from `memory-entry-standard.md`.
+After a real-task application, record the outcome using `application-routing.md` before deciding promotion, revision, or archive.
 
 ## Where to write experiments
 

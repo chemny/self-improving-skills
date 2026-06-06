@@ -2,6 +2,8 @@
 
 Choose the narrowest durable destination that future agents are likely to read.
 
+Use `application-routing.md` after candidate capture to decide how the item should be applied and validated before final promotion.
+
 ## Default targets
 
 ```text
@@ -55,3 +57,5 @@ Before writing to persistent files:
 3. Add the smallest useful entry.
 4. Avoid duplicating an existing rule.
 5. Report the changed path.
+
+For candidates, do not edit the final destination until the required validation threshold is met. Record application attempts in the candidate first.

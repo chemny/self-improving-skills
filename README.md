@@ -81,6 +81,31 @@ References:
 | Rule promotion | Stable lessons become durable behavior | Memory or instruction update |
 | Trigger governance | Missed triggers and false triggers | Trigger lifecycle management |
 | Pruning | Stale, duplicate, or conflicting rules | Keep, merge, demote, archive, remove |
+| Project Ledger | High-volume projects, long sessions, multi-task windows | Show projects, outputs, and decisions before memory triage |
+
+---
+
+## New In This Version: Project Ledger
+
+Many memory systems mostly catch explicit phrases such as "remember this", "always do X", or "do not do Y again". That is safe, but it misses the bigger question: what work actually happened, what was produced, what decisions were made, and which workflow lessons are reusable.
+
+Project Ledger is Agent Evolution's project outcome layer inside scan reports. Before memory triage, it answers:
+
+- What projects or tasks happened in the scan window?
+- What was each project's goal?
+- What files, repositories, skills, workflows, reports, media artifacts, or verification results were produced?
+- What decisions or constraints did the user confirm?
+- Which lessons need review, and which details are task-local?
+- Why was an item promoted, written as a candidate, archived, or rejected?
+
+```text
+session activity
+  -> Project Ledger
+  -> reusable learning hints
+  -> candidate / durable memory / archive
+```
+
+This keeps Agent Evolution from becoming only a keyword scanner. It first makes real project outcomes visible, then decides what deserves memory.
 
 ---
 

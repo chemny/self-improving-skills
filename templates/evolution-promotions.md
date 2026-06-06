@@ -10,18 +10,24 @@ Rules:
 Receipt format:
 
 ```markdown
-## YYYY-MM-DD HH:mm Auto Promotion
+## YYYY-MM-DD HH:mm Promotion
+
+Promoted item:
+- <title>
+
+From:
+- observation | candidate | explicit_user_confirmation | eval_loop
 
 Promoted to:
-`evolution.md`
+- <path or destination>
 
-Type:
-preference | correction | tool_gotcha | workflow
+Why eligible:
+- <specific threshold passed>
 
-Reason:
-- Why this was safe to auto-promote.
+Validation:
+- Required: <threshold>
+- Final state: <confirmed_by_user | applied_twice | eval_passed>
 
 Rollback:
-- Remove or edit the matching entry in `evolution.md`.
+- <how to remove, demote, or edit the promoted rule>
 ```
-

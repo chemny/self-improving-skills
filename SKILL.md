@@ -1,7 +1,7 @@
 ---
 name: agent-evolution
 description: 自包含的 Agent 进化系统。必须在用户说“记住”“以后都”“我的风格是”“不要再”“总结可沉淀经验”“复盘”“进化”“沉淀”“避免重复犯错”“写入长期记忆”“更新规则”“测试新规则是否有效”时使用，即使用户没有点名 agent-evolution。Use this self-contained skill for recording user preferences, corrections, task reflections, repeated failures, tool gotchas, eval loops, rule promotion, and pruning across Codex, Claude Code, and OpenClaw.
-version: 0.1.0
+version: 0.2.0
 ---
 
 # Agent Evolution
@@ -19,8 +19,24 @@ Signal -> Triage -> Route -> Store -> Validate -> Promote -> Apply -> Prune
 ```
 
 Use the smallest useful part of the loop. Do not force every memory through a slow eval process.
+Before writing durable memory or candidates, use `references/memory-entry-standard.md` to keep entries structured, scoped, validated, and reversible.
+When reviewing scheduled scans, manual six-hour scans, or rich project sessions, build a Project Ledger first with `references/project-ledger.md` so real project outcomes, outputs, decisions, and reusable learning hints are visible even when they are not promoted to memory. This is the default scan-report path, not an optional add-on.
 
 When another self-improvement skill could also apply, prefer this skill as the single controller. Do not ask the other skill to own the workflow unless the user explicitly asks to inspect or migrate it.
+
+## Quick decision path
+
+Use this fast path before opening deeper references:
+
+```text
+Explicit remember / preference / style -> direct memory, then report destination.
+Task summary or reflection request -> produce Evolution Reference; promote only specific reusable lessons.
+Low-risk correction with a stable fix -> candidate or direct low-risk rule, with evidence.
+Repeated failure or workflow change -> candidate + validation or eval loop.
+Deletion, overwrite, sync, publishing, external system, global behavior, automation, or permission rule -> 🔴 CHECKPOINT / 🛑 STOP.
+Discussion, diagnosis, advice, or "how should we do this?" -> no persistent write and no rule change unless the user explicitly asks to execute.
+Unclear, vague, one-off, or unsupported signal -> task summary only; do not promote.
+```
 
 ## Self-start model
 
@@ -43,9 +59,25 @@ Use these hard stops before storing, promoting, or automating:
 | Scheduled reflection is not configured and verified | Do not claim background reflection is active |
 | A trigger phrase is broad or ambiguous | Record it as `candidate`; do not promote it to frontmatter |
 | A memory contains secrets or sensitive third-party data | Refuse to store the raw value; store only a safe abstraction when useful |
+| A memory target is missing or not writable | Report a partial failure; do not claim the write succeeded |
+| A helper script is missing, fails, or is outside the available runtime | Fall back to the documented manual path and report the fallback |
+| A scheduled scan is running concurrently or sees duplicate signals | Re-read target files before writing, dedupe, and still append a formal scan report |
+| A six-hour report is requested | Count the full event-timestamp window first; do not substitute file mtime, small tail reads, or a bounded recent set |
+| A report thread or delivery channel is unavailable | Keep the formal report file as source of truth and say delivery was unavailable |
 | A proposed rule affects deletion, overwrite, permissions, external systems, or global behavior | 🔴 CHECKPOINT / 🛑 STOP: ask for explicit confirmation or run evals before promotion |
 | An old skill may contain unique user data or active rules | 🔴 CHECKPOINT / 🛑 STOP: migrate or archive first; do not delete |
 | A lesson is vague, one-off, or not future-useful | Keep it in the task summary or discard it; do not promote |
+
+## Do not
+
+- Do not promote a one-off instruction into a long-term rule.
+- Do not treat a task summary, reflection, or scan report as proof that the underlying problem is fixed.
+- Do not claim background scanning, scheduled reflection, report delivery, or cross-agent syncing is active until the host configuration has been verified.
+- Do not store secrets, tokens, cookies, credentials, private keys, or raw transcript dumps.
+- Do not automatically edit `AGENTS.md`, global instruction files, skill files, automation files, permissions, repositories, or external systems.
+- Do not delete, archive, deprecate, overwrite, publish, push, or sync unless the user explicitly asked for that operation and any required inventory/checkpoint has passed.
+- Do not use small sampled transcripts, file mtimes, or duplicate-only follow-up runs as the count for a full scheduled scan.
+- Do not write memory or update rules when the user is only discussing, comparing, diagnosing, or asking for a plan.
 
 ## When to use
 
@@ -98,6 +130,7 @@ When a task ends or the user asks for a summary, produce a normal task closeout 
 ```
 
 Read `references/reflection.md` for the full extraction format.
+Use `references/memory-entry-standard.md` before converting reflection output into candidates or durable memory.
 
 Do not claim background or cron reflection is active unless the host environment has actually configured it. If scheduled reflection is requested, treat it as an optional host automation and read `references/reflection.md` before proposing it.
 
@@ -148,6 +181,8 @@ Task-local note -> task summary only
 ```
 
 Read `references/storage-routing.md` before editing persistent files.
+Read `references/write-targets.md` when configuring formal memory files, write permissions, or cross-platform adapter paths.
+Read `references/application-routing.md` when deciding how a candidate should be applied, counted, validated, routed, promoted, revised, or archived.
 
 ## Validation path
 
@@ -159,6 +194,8 @@ Use an eval loop only for:
 - rules that may conflict with existing instructions.
 
 Read `references/eval-loop.md` before creating or promoting eval-backed rules.
+Use the lifecycle and validation thresholds in `references/memory-entry-standard.md` to decide whether an item is only an observation, a candidate, validated, or promotable.
+Use `references/application-routing.md` to record real-task application results before promotion when the item is not an explicit low-risk preference.
 
 ## Promotion
 
@@ -167,6 +204,8 @@ Promote only stable, specific, future-useful rules. Prefer short rules with clea
 🔴 CHECKPOINT / 🛑 STOP: Before promoting a rule that changes deletion, overwrite, permissions, external systems, automation, confirmation requirements, or global behavior, ask for explicit confirmation or validate it with `references/eval-loop.md`.
 
 Read `references/promotion.md` before editing an agent instruction file, tool notes file, principles file, or another skill.
+Read `references/memory-entry-standard.md` before appending to `evolution.md`, `evolution-candidates.md`, or `evolution-promotions.md`.
+Read `references/application-routing.md` before promoting candidates that must be routed to a specific skill, tool, project, or host instruction file.
 
 ## Pruning
 

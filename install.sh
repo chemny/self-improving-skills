@@ -64,10 +64,13 @@ copy_skill() {
 install_memory_templates() {
   local memory_dir="$1"
   mkdir -p "$memory_dir"
-  for file in evolution.md evolution-candidates.md evolution-promotions.md; do
+  for file in evolution.md evolution-candidates.md evolution-promotions.md evolution-scan-reports.md; do
     if [ ! -f "$memory_dir/$file" ]; then
       cp "$INSTALL_DIR/templates/$file" "$memory_dir/$file"
       log "Created memory file: $memory_dir/$file"
+    elif ! grep -Eq '^## [0-9]{4}' "$memory_dir/$file"; then
+      cp "$INSTALL_DIR/templates/$file" "$memory_dir/$file"
+      log "Refreshed empty memory template: $memory_dir/$file"
     else
       log "Memory file exists, kept: $memory_dir/$file"
     fi
@@ -119,4 +122,3 @@ main() {
 }
 
 main "$@"
-

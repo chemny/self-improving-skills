@@ -24,10 +24,12 @@ curl -fsSL https://raw.githubusercontent.com/chemny/agent-evolution/main/install
 The installer:
 
 1. Installs the skill into `~/.agents/skills/agent-evolution` by default.
-2. Creates `evolution.md`, `evolution-candidates.md`, and `evolution-promotions.md`.
+2. Creates `evolution.md`, `evolution-candidates.md`, `evolution-promotions.md`, and `evolution-scan-reports.md`.
 3. Detects Codex, Claude Code, OpenClaw, or generic environments.
 4. Enables Codex 6-hour graded scan automation when Codex is available.
 5. Installs adapter prompt files for platforms whose scheduler must be provided by the host.
+
+Read `write-targets.md` for the cross-platform memory directory mapping and write permission checks.
 
 ## Codex-style install
 
@@ -38,18 +40,25 @@ For Codex, the installer creates:
 ~/.codex/memories/evolution.md
 ~/.codex/memories/evolution-candidates.md
 ~/.codex/memories/evolution-promotions.md
+~/.codex/memories/evolution-scan-reports.md
 ~/.codex/automations/agent-evolution-graded-scan/automation.toml
 ```
 
-The automation runs every 6 hours. It may auto-promote low-risk learnings into `evolution.md`; medium/high-risk items go to `evolution-candidates.md`.
+The automation runs every 6 hours. It may auto-promote low-risk learnings into `evolution.md`; medium/high-risk items go to `evolution-candidates.md`; every run should append a detailed audit report to `evolution-scan-reports.md`.
+
+For sandboxed Codex automation, include the Codex memory root in the automation workspace directories so the job can append to `~/.codex/memories`.
 
 ## Claude Code-style install
 
 The installer creates adapter files under `~/.claude/agent-evolution` when `~/.claude` exists. Claude Code scheduler support varies by host setup, so use `scan-prompt.md` with hooks or cron when available.
 
+Formal memory writes are active only after the chosen hook or scheduler can append to `~/.claude/agent-evolution/memories`.
+
 ## OpenClaw-style install
 
 The installer creates adapter files under `~/.openclaw/agent-evolution` when `~/.openclaw` exists. Use `scan-prompt.md` with OpenClaw scheduler/session scanning if available.
+
+Formal memory writes are active only after the OpenClaw scanner can append to `~/.openclaw/agent-evolution/memories`.
 
 ## Generic install
 

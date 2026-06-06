@@ -7,8 +7,10 @@ target="$HOME/.agent-evolution"
 mkdir -p "$target/memories"
 cp "$skill_dir/templates/generic-scan-prompt.md" "$target/scan-prompt.md"
 
-for file in evolution.md evolution-candidates.md evolution-promotions.md; do
+for file in evolution.md evolution-candidates.md evolution-promotions.md evolution-scan-reports.md; do
   if [ ! -f "$target/memories/$file" ]; then
+    cp "$skill_dir/templates/$file" "$target/memories/$file"
+  elif ! grep -Eq '^## [0-9]{4}' "$target/memories/$file"; then
     cp "$skill_dir/templates/$file" "$target/memories/$file"
   fi
 done
@@ -23,4 +25,3 @@ if [ -n "${AGENT_EVOLUTION_SCAN_COMMAND:-}" ] && command -v crontab >/dev/null 2
 else
   echo "Generic files installed at $target. No generic cron was created because AGENT_EVOLUTION_SCAN_COMMAND is not set."
 fi
-
