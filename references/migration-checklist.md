@@ -1,6 +1,6 @@
 # Migration Checklist
 
-Use this checklist before replacing an older self-improvement, memory, reflection, or learning skill with Agent Evolution.
+Use this checklist before replacing an older self-improvement, memory, reflection, or learning skill with Self-Improving Skills.
 
 ## Scope
 
@@ -14,7 +14,7 @@ Memory
 ontology
 ```
 
-Only migrate durable operating value. Do not copy whole skill files, raw logs, or host-specific defaults into Agent Evolution.
+Only migrate durable operating value. Do not copy whole skill files, raw logs, or host-specific defaults into Self-Improving Skills.
 
 ## Inventory template
 
@@ -29,7 +29,7 @@ Primary trigger surface:
 Storage paths used:
 Scripts or automations:
 Host-specific assumptions:
-Potential conflicts with agent-evolution:
+Potential conflicts with self-improving-skills:
 
 Keep:
 Migrate:
@@ -95,7 +95,7 @@ ontology
 
 Before deprecating the source skill:
 
-- [ ] Agent Evolution covers the source skill's primary user-facing workflow.
+- [ ] Self-Improving Skills covers the source skill's primary user-facing workflow.
 - [ ] Important preferences and rules have a destination.
 - [ ] No secrets or raw transcripts were migrated.
 - [ ] Host-specific paths were removed or marked as examples only.

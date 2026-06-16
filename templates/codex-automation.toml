@@ -1,15 +1,15 @@
 version = 1
-id = "agent-evolution-graded-scan"
+id = "self-improving-skills-graded-scan"
 kind = "cron"
-name = "Agent Evolution Graded Scan"
-prompt = """Run a graded Agent Evolution scan for this user every 6 hours.
+name = "Self-Improving Skills Graded Scan"
+prompt = """Run a graded Self-Improving Skills scan for this user every 6 hours.
 
 Scope:
 - Read recent Codex session logs only from `{{CODEX_HOME}}/sessions` and `{{CODEX_HOME}}/archived_sessions` when relevant.
 - Use the actual scheduled window first, normally the last 6 hours ending at the current run time.
 - Count activity by JSONL event timestamps inside the window, not by file modification time alone.
 - Before extracting learnings, run the session inventory script when available:
-  `node <agent-evolution-skill-dir>/scripts/scan-window.mjs --codex-home {{CODEX_HOME}} --hours 6`
+  `node <self-improving-skills-skill-dir>/scripts/scan-window.mjs --codex-home {{CODEX_HOME}} --hours 6`
 - If the script path is unavailable, manually compute the same inventory from event timestamps before reading details.
 - Do not read browser history, emails, private app data, unrelated project files, or full large transcripts.
 - For large transcripts, first use the inventory counts and candidate signal samples, then read only bounded excerpts around likely signal timestamps.
@@ -251,7 +251,7 @@ Next actions:
 After each scan, include a readable review summary in the automation result:
 
 ```markdown
-## Agent Evolution Scan Review - YYYY-MM-DD HH:mm
+## Self-Improving Skills Scan Review - YYYY-MM-DD HH:mm
 
 Effective learnings:
 - [low-risk] <ready for durable memory, with destination>
@@ -267,7 +267,7 @@ Next actions:
 - <approve, revise, route, validate, or archive>
 ```
 
-If this automation can post to a configured report thread, post the same concise `Agent Evolution Scan Review` there after the formal file report is written. If no report thread is configured or accessible, do not post to the active user chat; write the formal file report and state in the automation result that thread delivery was unavailable.
+If this automation can post to a configured report thread, post the same concise `Self-Improving Skills Scan Review` there after the formal file report is written. If no report thread is configured or accessible, do not post to the active user chat; write the formal file report and state in the automation result that thread delivery was unavailable.
 
 Do not write raw summaries, vague advice, or unordered transcript snippets. Every candidate or promotion must include status, risk, confidence, scope, source, rule, validation state, destination, application log, and next action or review condition.
 

@@ -21,7 +21,7 @@
   },
   {
     "id": "six-hour-scan-report",
-    "prompt": "检查过去 6 小时的 Agent Evolution 自动扫描报告，告诉我有多少线程、有多少有效信息，为什么没有写入 memory。",
+    "prompt": "检查过去 6 小时的 Self-Improving Skills 自动扫描报告，告诉我有多少线程、有多少有效信息，为什么没有写入 memory。",
     "expected": "Run or invoke the window-inventory path; distinguish sessions, raw user messages, meaningful messages, candidate signals, project ledger items, effective information, and new writable items."
   },
   {

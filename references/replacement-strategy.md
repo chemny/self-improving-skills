@@ -1,10 +1,10 @@
 # Replacement Strategy
 
-Use this reference when Agent Evolution is intended to replace another self-improvement, memory, reflection, or learning skill.
+Use this reference when Self-Improving Skills is intended to replace another self-improvement, memory, reflection, or learning skill.
 
 ## Goal
 
-Make Agent Evolution the single controller for:
+Make Self-Improving Skills the single controller for:
 
 - direct user memory,
 - correction learning,
@@ -54,7 +54,7 @@ For a step-by-step audit checklist, use `migration-checklist.md`. For narrowing,
 
 2. Classify
    - keep: still useful and specific.
-   - migrate: useful, but should live under Agent Evolution routing.
+   - migrate: useful, but should live under Self-Improving Skills routing.
    - archive: historically useful but not active.
    - remove: stale, duplicate, unsafe, or wrong.
 
@@ -82,7 +82,7 @@ For a step-by-step audit checklist, use `migration-checklist.md`. For narrowing,
 ## Deprecation note template
 
 ```markdown
-Deprecated: use `agent-evolution` as the primary workflow for memory, reflection, correction learning, eval-backed promotion, and pruning. This skill is retained only as a historical reference or migration source.
+Deprecated: use `self-improving-skills` as the primary workflow for memory, reflection, correction learning, eval-backed promotion, and pruning. This skill is retained only as a historical reference or migration source.
 ```
 
 ## Safety rules

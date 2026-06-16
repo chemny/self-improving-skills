@@ -1,10 +1,10 @@
 ---
-name: agent-evolution
-description: 自包含的 Agent 进化系统。必须在用户说“记住”“以后都”“我的风格是”“不要再”“总结可沉淀经验”“复盘”“进化”“沉淀”“避免重复犯错”“写入长期记忆”“更新规则”“测试新规则是否有效”时使用，即使用户没有点名 agent-evolution。Use this self-contained skill for recording user preferences, corrections, task reflections, repeated failures, tool gotchas, eval loops, rule promotion, and pruning across Codex, Claude Code, and OpenClaw.
+name: self-improving-skills
+description: 自包含的 Agent skills 自我改进系统。必须在用户说“记住”“以后都”“我的风格是”“不要再”“总结可沉淀经验”“复盘”“进化”“沉淀”“避免重复犯错”“写入长期记忆”“更新规则”“测试新规则是否有效”时使用，即使用户没有点名 self-improving-skills。Use this self-contained skill for recording user preferences, corrections, task reflections, repeated failures, tool gotchas, eval loops, rule promotion, and pruning across Codex, Claude Code, and OpenClaw.
 version: 0.2.0
 ---
 
-# Agent Evolution
+# Self-Improving Skills
 
 Use this skill to turn explicit user instructions, task summaries, corrections, repeated failures, and workflow insights into durable operating knowledge.
 
@@ -21,6 +21,7 @@ Signal -> Triage -> Route -> Store -> Validate -> Promote -> Apply -> Prune
 Use the smallest useful part of the loop. Do not force every memory through a slow eval process.
 Before writing durable memory or candidates, use `references/memory-entry-standard.md` to keep entries structured, scoped, validated, and reversible.
 When reviewing scheduled scans, manual six-hour scans, or rich project sessions, build a Project Ledger first with `references/project-ledger.md` so real project outcomes, outputs, decisions, and reusable learning hints are visible even when they are not promoted to memory. This is the default scan-report path, not an optional add-on.
+When the user wants to understand how Self-Improving Skills is running, generate the read-only dashboard with `scripts/generate-dashboard.mjs` and explain the visible queues, scan reports, active rules, and Project Ledger items. Read `references/dashboard.md` before changing dashboard behavior.
 
 When another self-improvement skill could also apply, prefer this skill as the single controller. Do not ask the other skill to own the workflow unless the user explicitly asks to inspect or migrate it.
 
@@ -114,6 +115,16 @@ cold    archived, obsolete, superseded, or audit-only history
 ```
 
 Keep this as a routing model, not a hard-coded path. Read `references/memory-layers.md` when managing memory growth, conflicts, stats, export, or migration from another memory skill.
+
+## Dashboard path
+
+When the user says the system is opaque, asks to see how evolution is running, or wants a visual status view:
+
+1. Run `node scripts/generate-dashboard.mjs --codex-home <host-home>` from the skill root.
+2. Open or report the generated static HTML path.
+3. Use the dashboard to explain active rules, candidates, review queues, scan reports, and Project Ledger items.
+
+The dashboard is read-only. It must not mutate memory files, promote candidates, delete reports, or change automation settings.
 
 ## Reflection path
 

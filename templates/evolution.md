@@ -1,4 +1,4 @@
-# Agent Evolution Memory
+# Self-Improving Skills Memory
 
 This file stores low-risk, auto-promoted learnings from recent agent sessions.
 

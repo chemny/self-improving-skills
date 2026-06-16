@@ -1,6 +1,6 @@
 # Memory Entry Standard
 
-Use this standard before writing Agent Evolution output into durable memory, candidate files, promotion logs, skills, or host instruction files.
+Use this standard before writing Self-Improving Skills output into durable memory, candidate files, promotion logs, skills, or host instruction files.
 
 The goal is not to save more text. The goal is to save fewer, clearer, verified operating rules.
 
@@ -142,7 +142,7 @@ Decision needed:
 Background scans and manual reviews should report what happened in a readable summary before or alongside writes:
 
 ```markdown
-## Agent Evolution Scan Review - YYYY-MM-DD HH:mm
+## Self-Improving Skills Scan Review - YYYY-MM-DD HH:mm
 
 Effective learnings:
 - [low-risk] <ready for durable memory, with destination>
@@ -187,7 +187,7 @@ For scheduled scans, a run is not complete until the formal scan report has been
 
 Every formal scan report should include a Chinese readable section. Keep structured English fields for stable parsing, then add `### 中文报告` with plain Chinese explanations of counts, accepted items, rejected or skipped items, write results, and next actions.
 
-If a configured report thread is available, post the concise `Agent Evolution Scan Review` there after the formal report is written. If no report thread is configured or accessible, do not post to the active user chat; keep the formal file report as the source of truth and state that thread delivery was unavailable.
+If a configured report thread is available, post the concise `Self-Improving Skills Scan Review` there after the formal report is written. If no report thread is configured or accessible, do not post to the active user chat; keep the formal file report as the source of truth and state that thread delivery was unavailable.
 
 ## Promotion receipt
 

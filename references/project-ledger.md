@@ -1,6 +1,6 @@
 # Project Ledger
 
-Use the Project Ledger to make Agent Evolution account for real work before it decides what becomes memory.
+Use the Project Ledger to make Self-Improving Skills account for real work before it decides what becomes memory.
 
 The ledger is required for scheduled scans, manual six-hour scans, and any rich project-session review. It is not durable memory by itself. It is an auditable project/work inventory layer between raw sessions and memory candidates.
 
@@ -10,7 +10,7 @@ The ledger is required for scheduled scans, manual six-hour scans, and any rich 
 - Show what outputs, decisions, and reusable lessons were detected.
 - Make it clear which work was reviewed, which work was ignored, and why.
 - Prevent project outcomes from disappearing just because they are not explicit "remember this" phrases.
-- Let the user audit whether Agent Evolution actually saw the work before judging whether it should be promoted.
+- Let the user audit whether Self-Improving Skills actually saw the work before judging whether it should be promoted.
 
 ## Required Fields
 

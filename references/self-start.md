@@ -1,8 +1,8 @@
 # Self-Start Model
 
-Use this reference when improving how Agent Evolution starts, when it should act without an explicit memory keyword, or when the user asks for background improvement.
+Use this reference when improving how Self-Improving Skills starts, when it should act without an explicit memory keyword, or when the user asks for background improvement.
 
-Agent Evolution has three startup levels:
+Self-Improving Skills has three startup levels:
 
 ```text
 Level 1: metadata-trigger
@@ -29,7 +29,7 @@ Keep high-confidence trigger groups in the frontmatter description. Keep rare or
 
 ## Level 2: opportunistic-self-start
 
-Once Agent Evolution is already loaded, it should run a lightweight evolution check at natural checkpoints even if the user did not use a trigger keyword.
+Once Self-Improving Skills is already loaded, it should run a lightweight evolution check at natural checkpoints even if the user did not use a trigger keyword.
 
 Run the check after:
 

@@ -1,6 +1,6 @@
 # Memory Layers
 
-Use this reference when Agent Evolution needs to manage memory growth, conflict resolution, forgetting, export, stats, or migration from another memory skill.
+Use this reference when Self-Improving Skills needs to manage memory growth, conflict resolution, forgetting, export, stats, or migration from another memory skill.
 
 ## Layer model
 

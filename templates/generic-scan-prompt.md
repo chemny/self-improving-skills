@@ -1,6 +1,6 @@
-# Agent Evolution Graded Scan Prompt
+# Self-Improving Skills Graded Scan Prompt
 
-Run a graded Agent Evolution scan for the current user.
+Run a graded Self-Improving Skills scan for the current user.
 
 Scope:
 - Read recent agent session logs only from the host's normal session log location.
@@ -42,7 +42,7 @@ MEDIUM RISK: write to candidates only when the learning may affect a default wor
 HIGH RISK: write to candidates only and mark `Status: requires_confirmation` when the learning affects deletion, overwrite, external systems, GitHub, Feishu/Lark, publishing, sync, credentials, permissions, automation behavior, host instruction files, skill files, or broad cross-agent behavior.
 
 Write targets:
-- Low-risk auto-promotions: append to the host's Agent Evolution `evolution.md` and write a receipt to `evolution-promotions.md`.
+- Low-risk auto-promotions: append to the host's Self-Improving Skills `evolution.md` and write a receipt to `evolution-promotions.md`.
 - Medium/high-risk candidates: append to `evolution-candidates.md`.
 - Detailed scan report: append to `evolution-scan-reports.md` after every scan.
 - If there are no useful candidates and no safe promotions, append nothing.
@@ -161,7 +161,7 @@ Application routing:
 Scan review summary:
 
 ```markdown
-## Agent Evolution Scan Review - YYYY-MM-DD HH:mm
+## Self-Improving Skills Scan Review - YYYY-MM-DD HH:mm
 
 Effective learnings:
 - [low-risk] <ready for durable memory, with destination>
@@ -186,7 +186,7 @@ Completion contract:
 - This is required for duplicate-only, no-new-writes, no-useful-candidates, concurrent, partial, and skipped scans.
 - Do not treat automation-local memory, internal notes, or the scan review summary as a substitute for the formal scan report.
 - The report must include a Chinese readable section so the user can audit the result directly. Keep the structured English fields for machine consistency, then add `### 中文报告` with plain Chinese explanation of counts, accepted items, rejected items, write results, and next actions.
-- If a configured report thread is available, post the concise `Agent Evolution Scan Review` there only after the formal file report is written. If no report thread is configured or accessible, do not post to the active user chat; write the formal file report and note that thread delivery was unavailable.
+- If a configured report thread is available, post the concise `Self-Improving Skills Scan Review` there only after the formal file report is written. If no report thread is configured or accessible, do not post to the active user chat; write the formal file report and note that thread delivery was unavailable.
 
 ```markdown
 ## YYYY-MM-DD HH:mm - Scan Report

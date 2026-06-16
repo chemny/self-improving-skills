@@ -1,6 +1,6 @@
 # Deprecation Plan
 
-Use this reference after Agent Evolution has absorbed the useful behavior of older self-updating skills.
+Use this reference after Self-Improving Skills has absorbed the useful behavior of older self-updating skills.
 
 ## Deprecation stages
 
@@ -17,10 +17,10 @@ active
   The old skill can still trigger normally.
 
 narrowed
-  The old skill description is reduced so Agent Evolution owns memory, reflection, correction learning, eval promotion, and pruning.
+  The old skill description is reduced so Self-Improving Skills owns memory, reflection, correction learning, eval promotion, and pruning.
 
 deprecated
-  The old skill remains installed only for historical reference or migration. Its description should say to use Agent Evolution.
+  The old skill remains installed only for historical reference or migration. Its description should say to use Self-Improving Skills.
 
 archived
   The old skill is moved out of the active skills directory but retained locally.
@@ -34,7 +34,7 @@ removed
 1. Migrate durable content with `references/migration-checklist.md`.
 2. Narrow broad triggers in the old skill.
 3. Add a deprecation note to the old skill.
-4. Open a fresh session and confirm Agent Evolution triggers for the main workflows.
+4. Open a fresh session and confirm Self-Improving Skills triggers for the main workflows.
 5. Archive the old skill outside the active skills directory.
 6. Delete only after the user confirms there is no remaining unique value.
 
@@ -45,7 +45,7 @@ removed
 Use this note when editing an old skill:
 
 ```markdown
-Deprecated: use `agent-evolution` as the primary workflow for direct memory, correction learning, task reflection, eval-backed rule promotion, trigger governance, pruning, and forgetting. This skill is retained only as a historical reference or migration source.
+Deprecated: use `self-improving-skills` as the primary workflow for direct memory, correction learning, task reflection, eval-backed rule promotion, trigger governance, pruning, and forgetting. This skill is retained only as a historical reference or migration source.
 ```
 
 ## Trigger narrowing guidance
@@ -59,14 +59,14 @@ Remove or narrow old skill trigger phrases for:
 - eval loop / 验证规则
 - pruning / 删除规则 / 清理记忆
 
-Keep old skill triggers only for truly unique, source-specific behavior that Agent Evolution does not own.
+Keep old skill triggers only for truly unique, source-specific behavior that Self-Improving Skills does not own.
 
 ## Archive safety
 
 Before archiving or removing:
 
 - Search for unique user preferences.
-- Search for unique rules that are not in Agent Evolution's routed destinations.
+- Search for unique rules that are not in Self-Improving Skills' routed destinations.
 - Search for local data files under the skill directory.
 - Check whether other skills reference this skill by name or path.
 - Confirm no scheduled automation depends on it.

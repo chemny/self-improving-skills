@@ -3,9 +3,9 @@ set -euo pipefail
 
 skill_dir="${1:?skill dir required}"
 codex_home="${2:-${CODEX_HOME:-$HOME/.codex}}"
-automation_dir="$codex_home/automations/agent-evolution-graded-scan"
-if [ -f "$codex_home/automations/agent-evolution-candidate-scan/automation.toml" ]; then
-  automation_dir="$codex_home/automations/agent-evolution-candidate-scan"
+automation_dir="$codex_home/automations/self-improving-skills-graded-scan"
+if [ -f "$codex_home/automations/self-improving-skills-candidate-scan/automation.toml" ]; then
+  automation_dir="$codex_home/automations/self-improving-skills-candidate-scan"
 fi
 memory_dir="$codex_home/memories"
 

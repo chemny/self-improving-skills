@@ -106,7 +106,7 @@ function inferTitle(samples, cwd) {
   const text = samples.join(" ");
   const titleChecks = [
     ["NotebookLM courseware workflow", /(NotebookLM|课件|PPT|播客)/i],
-    ["Agent Evolution tuning", /(Agent Evolution|agent-evolution|进化|沉淀|长期记忆)/i],
+    ["Self-Improving Skills tuning", /(Self-Improving Skills|self-improving-skills|进化|沉淀|长期记忆)/i],
     ["Skill publishing or GitHub workflow", /(GitHub|README|发布|同步|仓库)/i],
     ["Skill design or installation", /(skill|skills|SKILL|安装|创建)/i],
     ["Media extraction or production", /(视频|音频|MP3|旁白|Remotion|TTS)/i],

@@ -1,5 +1,5 @@
 {
-  "skill_name": "agent-evolution",
+  "skill_name": "self-improving-skills",
   "evals": [
     {
       "id": 1,
@@ -27,7 +27,7 @@
     },
     {
       "id": 5,
-      "prompt": "检查过去 6 小时的 Agent Evolution 自动扫描报告，告诉我有多少线程、有多少有效信息，为什么没有写入 memory。",
+      "prompt": "检查过去 6 小时的 Self-Improving Skills 自动扫描报告，告诉我有多少线程、有多少有效信息，为什么没有写入 memory。",
       "expected_output": "Separates inventory, project ledger, and triage; counts the event-timestamp window; distinguishes meaningful user messages/candidate signals/project ledger items/effective information/new writable items; and does not rely on file mtime or bounded tail samples as the full count.",
       "files": [
         "scripts/scan-window.mjs"

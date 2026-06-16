@@ -1,6 +1,6 @@
 # Trigger Evolution
 
-Use this guide when improving when `agent-evolution` should trigger. Trigger evolution is a governance loop, not a keyword dump.
+Use this guide when improving when `self-improving-skills` should trigger. Trigger evolution is a governance loop, not a keyword dump.
 
 ## Principle
 

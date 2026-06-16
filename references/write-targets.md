@@ -1,6 +1,6 @@
 # Write Targets
 
-Agent Evolution uses one shared memory protocol across platforms, but each host owns its own writable paths and scheduling mechanism.
+Self-Improving Skills uses one shared memory protocol across platforms, but each host owns its own writable paths and scheduling mechanism.
 
 Do not hard-code Codex paths into the core protocol. Use the adapter for the active host.
 
@@ -22,11 +22,11 @@ The memory and candidate files must use the formats in `memory-entry-standard.md
 | Host | Default memory directory | Scheduler / scan mechanism |
 |---|---|---|
 | Codex | `~/.codex/memories` | Codex automation when available |
-| Claude Code | `~/.claude/agent-evolution/memories` | host hook, cron, or user-provided scheduler |
-| OpenClaw | `~/.openclaw/agent-evolution/memories` | OpenClaw scheduler/session scanner when available |
-| Generic | `~/.agent-evolution/memories` | `AGENT_EVOLUTION_SCAN_COMMAND` with cron, when configured |
+| Claude Code | `~/.claude/self-improving-skills/memories` | host hook, cron, or user-provided scheduler |
+| OpenClaw | `~/.openclaw/self-improving-skills/memories` | OpenClaw scheduler/session scanner when available |
+| Generic | `~/.self-improving-skills/memories` | `SELF_IMPROVING_SKILLS_SCAN_COMMAND` with cron, when configured |
 
-The host may override the directory with `AGENT_EVOLUTION_MEMORY_DIR`.
+The host may override the directory with `SELF_IMPROVING_SKILLS_MEMORY_DIR`.
 
 ## Write permission requirements
 
@@ -47,11 +47,11 @@ For Codex automations, `~/.codex/memories` must be writable from the automation 
 
 ## Claude Code note
 
-Claude Code scheduler support varies by installation. The adapter installs the standard files and `scan-prompt.md`; the user or host must connect that prompt to hooks, cron, or another scheduler that can write to `~/.claude/agent-evolution/memories`.
+Claude Code scheduler support varies by installation. The adapter installs the standard files and `scan-prompt.md`; the user or host must connect that prompt to hooks, cron, or another scheduler that can write to `~/.claude/self-improving-skills/memories`.
 
 ## OpenClaw note
 
-OpenClaw should use the same standard files under `~/.openclaw/agent-evolution/memories` unless the user configures another memory directory. The OpenClaw session scanner should use `scan-prompt.md` and write only structured entries.
+OpenClaw should use the same standard files under `~/.openclaw/self-improving-skills/memories` unless the user configures another memory directory. The OpenClaw session scanner should use `scan-prompt.md` and write only structured entries.
 
 ## Safety
 

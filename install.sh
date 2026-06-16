@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO_URL="${AGENT_EVOLUTION_REPO_URL:-https://github.com/chemny/agent-evolution}"
-BRANCH="${AGENT_EVOLUTION_BRANCH:-main}"
-SKILLS_DIR="${AGENT_EVOLUTION_SKILLS_DIR:-$HOME/.agents/skills}"
-INSTALL_DIR="$SKILLS_DIR/agent-evolution"
+REPO_URL="${SELF_IMPROVING_SKILLS_REPO_URL:-https://github.com/chemny/self-improving-skills}"
+BRANCH="${SELF_IMPROVING_SKILLS_BRANCH:-main}"
+SKILLS_DIR="${SELF_IMPROVING_SKILLS_SKILLS_DIR:-$HOME/.agents/skills}"
+INSTALL_DIR="$SKILLS_DIR/self-improving-skills"
 
 log() {
-  printf '[agent-evolution] %s\n' "$*"
+  printf '[self-improving-skills] %s\n' "$*"
 }
 
 need_cmd() {
@@ -34,7 +34,7 @@ prepare_source() {
   need_cmd tar
 
   local tmp
-  tmp="$(mktemp -d "${TMPDIR:-/tmp}/agent-evolution-install.XXXXXX")"
+  tmp="$(mktemp -d "${TMPDIR:-/tmp}/self-improving-skills-install.XXXXXX")"
   log "Downloading $REPO_URL archive..."
   curl -fsSL "$REPO_URL/archive/refs/heads/$BRANCH.tar.gz" | tar -xz -C "$tmp"
   local unpacked
@@ -79,7 +79,7 @@ install_memory_templates() {
 
 install_codex_if_available() {
   local codex_home="${CODEX_HOME:-$HOME/.codex}"
-  if [ ! -d "$codex_home" ] && [ -z "${AGENT_EVOLUTION_FORCE_CODEX:-}" ]; then
+  if [ ! -d "$codex_home" ] && [ -z "${SELF_IMPROVING_SKILLS_FORCE_CODEX:-}" ]; then
     return 0
   fi
 
@@ -107,11 +107,11 @@ main() {
   src="$(prepare_source)"
   copy_skill "$src"
 
-  local default_memory_dir="$HOME/.agent-evolution/memories"
-  if [ -d "${CODEX_HOME:-$HOME/.codex}" ] || [ -n "${AGENT_EVOLUTION_FORCE_CODEX:-}" ]; then
+  local default_memory_dir="$HOME/.self-improving-skills/memories"
+  if [ -d "${CODEX_HOME:-$HOME/.codex}" ] || [ -n "${SELF_IMPROVING_SKILLS_FORCE_CODEX:-}" ]; then
     default_memory_dir="${CODEX_HOME:-$HOME/.codex}/memories"
   fi
-  install_memory_templates "${AGENT_EVOLUTION_MEMORY_DIR:-$default_memory_dir}"
+  install_memory_templates "${SELF_IMPROVING_SKILLS_MEMORY_DIR:-$default_memory_dir}"
   install_codex_if_available
   install_platform_notes
 

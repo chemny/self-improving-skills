@@ -1,64 +1,64 @@
-# Agent Evolution
+# Self-Improving Skills
 
-> A self-evolving skill that turns user corrections, preferences, task reflections, repeated mistakes, and workflow lessons into durable agent operating knowledge.
+> 一个自我进化 skill：把用户纠正、偏好、任务复盘、重复错误和工作流经验，沉淀成 Agent 可持续使用的操作知识。
 
-[中文](README.zh.md) | English
+中文 | [English](README.en.md)
 
-Agent Evolution is a single-skill package for agents that need to improve over time without depending on a pile of manual notes or fragile prompt tweaks.
+Self-Improving Skills 是一个单独的 skill 包，目标是让 Agent 不只是完成当前任务，而是能从真实使用中持续改进。
 
-It gives your agent a practical evolution loop:
+它提供一套清晰的进化闭环：
 
 ```text
-Capture signal -> Triage -> Risk-grade -> Store -> Auto-promote safe learnings -> Review risky changes -> Prune stale rules
+捕捉信号 -> 分类判断 -> 风险分级 -> 存储 -> 低风险自动晋升 -> 高风险等待确认 -> 清理过期规则
 ```
 
-It supports Codex, Claude Code, OpenClaw, and generic agent environments that can load local `SKILL.md`-style instructions.
+它支持 Codex、Claude Code、OpenClaw，以及其他能够加载本地 `SKILL.md` 指令的 Agent 环境。
 
 ---
 
-## What Problem It Solves
+## 解决什么问题
 
-Most agents do not truly improve from experience:
+很多 Agent 并不会真正从经验中进化：
 
-- User preferences are mentioned once, then forgotten.
-- Corrections fix the current answer but do not affect future behavior.
-- Repeated mistakes keep happening because no rule is promoted.
-- Task summaries describe what happened but do not extract reusable lessons.
-- Trigger phrases keep growing, but stale or noisy triggers are never cleaned up.
-- Memory files become noisy because everything is stored at the same level.
+- 用户偏好说过一次，过几天就忘。
+- 用户纠正只修复当前回答，不影响未来行为。
+- 重复错误一直出现，因为没有被晋升成规则。
+- 任务总结只写做了什么，没有提炼下次怎么做。
+- 触发词越加越多，但旧的、噪声大的触发词没有被清理。
+- 记忆文件越来越乱，因为所有信息都被放在同一个层级。
 
-Agent Evolution gives the agent a structured way to decide:
+Self-Improving Skills 帮 Agent 判断：
 
-- What should be remembered immediately.
-- What should be only a candidate.
-- What is safe to auto-promote.
-- What must require human confirmation.
-- What should be archived or pruned.
+- 什么应该立刻记住。
+- 什么只能先放进候选区。
+- 什么可以安全自动晋升。
+- 什么必须等人确认。
+- 什么应该归档或清理。
 
 ---
 
-## Design Philosophy
+## 设计思想：借鉴 Karpathy 的 Software 3.0 / LLM OS 思路
 
-Agent Evolution is inspired by Andrej Karpathy's Software 3.0 / LLM OS framing and the broader context engineering discussion: LLM behavior is increasingly shaped by natural-language instructions, context, tools, memory, examples, feedback, evaluation, and pruning, not only by traditional code.
+Self-Improving Skills 的底层思路，借鉴了 Andrej Karpathy 关于 Software 3.0 / LLM OS 的判断，也参考了 Anthropic、LangChain 等团队关于 context engineering 的讨论：在大模型时代，Agent 的行为不只由传统代码决定，也越来越由自然语言指令、上下文、工具、记忆、例子、反馈、验证和清理机制共同决定。
 
-In that framing, an agent's real "program" is not a single prompt. It is the context system around the model:
+换句话说，Agent 真正的「程序」不只是一句 prompt，而是它周围的上下文系统：
 
 ```text
 instructions + memory + tools + examples + feedback + evals + pruning
 ```
 
-Agent Evolution turns that idea into a small, operational skill:
+Self-Improving Skills 做的事情，就是把这个思路落成一个可执行的 skill：
 
-- Context is treated as an editable runtime, not a pile of notes.
-- User feedback becomes structured operating knowledge.
-- Low-risk learnings can be promoted automatically.
-- Repeated failures become eval-backed rule candidates.
-- Trigger phrases evolve through a lifecycle instead of growing forever.
-- Human confirmation stays in the loop for high-impact changes.
+- 把 context 当成可维护的运行时，而不是聊天记录的堆积。
+- 把用户反馈变成结构化操作知识。
+- 低风险经验可以自动晋升。
+- 把重复错误变成可验证的候选规则。
+- 把触发词当成需要治理的接口，而不是无限追加关键词。
+- 对高影响规则保留人工确认，不让 Agent 自动乱升级。
 
-This project is not affiliated with or endorsed by Andrej Karpathy, Anthropic, LangChain, or Shopify. It borrows the engineering lens: in the Software 3.0 era, improving an agent means engineering its context, memory, tools, feedback loops, validation surfaces, and pruning mechanisms.
+这不是 Karpathy、Anthropic、LangChain 或 Shopify 参与或背书的项目，而是借鉴这些公开讨论里的工程视角：在 Software 3.0 时代，改进 Agent 的关键，不只是写更长的 prompt，而是工程化管理它的上下文、记忆、工具、反馈闭环、验证面和清理机制。
 
-References:
+参考：
 
 - Andrej Karpathy, [Software Is Changing (Again)](https://www.youtube.com/watch?v=LCEmiRjPEtQ), YC AI Startup School.
 - Andrej Karpathy, [Software 2.0](https://karpathy.medium.com/software-2-0-a64152b37c35).
@@ -69,34 +69,34 @@ References:
 
 ---
 
-## What It Can Do
+## 它能做什么
 
-| Capability | What It Handles | Output |
+| 能力 | 处理什么 | 输出 |
 |---|---|---|
-| Direct memory | Explicit user preferences such as "remember this" or "always do X" | Stable user memory |
-| Task reflection | Completed work, summaries, repeated workflows | Reusable lessons |
-| Error learning | User corrections and repeated mistakes | Candidate or promoted rule |
-| Tool gotchas | Paths, command failures, environment issues | Tool/workflow memory |
-| Risk grading | Low / medium / high risk classification | Auto-promote or review |
-| Rule promotion | Stable lessons become durable behavior | Memory or instruction update |
-| Trigger governance | Missed triggers and false triggers | Trigger lifecycle management |
-| Pruning | Stale, duplicate, or conflicting rules | Keep, merge, demote, archive, remove |
-| Project Ledger | High-volume projects, long sessions, multi-task windows | Show projects, outputs, and decisions before memory triage |
+| 直接记忆 | 用户明确说“记住”“以后都”“我的风格是” | 稳定用户记忆 |
+| 任务复盘 | 完成任务、总结、重复流程 | 可复用经验 |
+| 错误沉淀 | 用户纠正、重复犯错 | 候选规则或已晋升规则 |
+| 工具坑记录 | 路径、命令失败、环境问题 | 工具/工作流记忆 |
+| 风险分级 | 低 / 中 / 高风险判断 | 自动晋升或等待确认 |
+| 规则晋升 | 稳定经验变成长期行为 | 记忆或指令更新 |
+| 触发词治理 | 漏触发、误触发 | 触发词生命周期管理 |
+| 清理机制 | 过期、重复、冲突规则 | 保留、合并、降级、归档、删除 |
+| 项目成果账本 | 高频项目、长会话、多任务窗口 | 先展示项目/产物/决策，再判断是否进入记忆 |
 
 ---
 
-## New In This Version: Project Ledger
+## 新版本亮点：Project Ledger
 
-Many memory systems mostly catch explicit phrases such as "remember this", "always do X", or "do not do Y again". That is safe, but it misses the bigger question: what work actually happened, what was produced, what decisions were made, and which workflow lessons are reusable.
+很多长期记忆系统只会抓“记住”“以后都”“不要再”这类关键词。这样虽然安全，但会漏掉真正重要的东西：用户每天做了哪些项目、产出了什么、做了哪些决策、哪些流程真的值得复用。
 
-Project Ledger is Agent Evolution's project outcome layer inside scan reports. Before memory triage, it answers:
+Project Ledger 是 Self-Improving Skills 在扫描报告里的项目成果账本。它会在 memory triage 之前先回答：
 
-- What projects or tasks happened in the scan window?
-- What was each project's goal?
-- What files, repositories, skills, workflows, reports, media artifacts, or verification results were produced?
-- What decisions or constraints did the user confirm?
-- Which lessons need review, and which details are task-local?
-- Why was an item promoted, written as a candidate, archived, or rejected?
+- 这段时间做了哪些项目或任务？
+- 每个项目的目标是什么？
+- 有哪些文件、仓库、skill、流程、报告、媒体或验证结果？
+- 用户确认了哪些决策或约束？
+- 哪些经验值得 review，哪些只是任务细节？
+- 为什么某条内容进入 memory、候选区、归档，或被舍弃？
 
 ```text
 session activity
@@ -105,161 +105,161 @@ session activity
   -> candidate / durable memory / archive
 ```
 
-This keeps Agent Evolution from becoming only a keyword scanner. It first makes real project outcomes visible, then decides what deserves memory.
+这让 Self-Improving Skills 不只是“关键词扫描器”，而是能先把真实工作成果展示出来，再决定哪些内容值得沉淀。
 
 ---
 
-## Core Workflow
+## 核心流程
 
 ```mermaid
 flowchart TD
-  A["User signal<br/>preference, correction, reflection, repeated failure"] --> B["Triage<br/>classify signal type and risk"]
-  B --> C{"Explicit low-risk preference?"}
-  C -->|Yes| D["Direct memory<br/>store without slow validation"]
-  C -->|No| E{"Repeated or high impact?"}
-  E -->|Yes| F["Candidate review<br/>write to evolution-candidates.md"]
-  E -->|No| G["Lightweight learning<br/>keep as task reflection or low-risk memory"]
-  F --> H["Validate<br/>manual review or eval loop"]
-  H --> I{"Stable and useful?"}
-  I -->|Yes| J["Promote<br/>write durable operating rule"]
-  I -->|No| K["Archive or discard<br/>avoid noisy memory growth"]
-  D --> L["Apply in future work"]
+  A["用户信号<br/>偏好、纠正、复盘、重复错误"] --> B["分类判断<br/>识别信号类型和风险等级"]
+  B --> C{"是否明确且低风险的偏好？"}
+  C -->|是| D["直接记忆<br/>不走慢验证"]
+  C -->|否| E{"是否重复出现或影响较高？"}
+  E -->|是| F["候选 review<br/>写入 evolution-candidates.md"]
+  E -->|否| G["轻量沉淀<br/>作为任务复盘或低风险记忆"]
+  F --> H["验证<br/>人工 review 或 eval loop"]
+  H --> I{"是否稳定且未来有用？"}
+  I -->|是| J["晋升<br/>写成长期操作规则"]
+  I -->|否| K["归档或丢弃<br/>避免记忆噪声增长"]
+  D --> L["应用到后续任务"]
   G --> L
   J --> L
-  L --> M["Prune<br/>merge, demote, archive, or remove stale rules"]
+  L --> M["清理<br/>合并、降级、归档或删除过期规则"]
   M --> B
 ```
 
 ---
 
-## Self-Running Mechanism
+## 自运行机制
 
-Agent Evolution has three startup levels:
+Self-Improving Skills 有三层启动机制：
 
 ```text
 metadata-trigger
-  The host loads the skill when SKILL.md matches the user request.
+  宿主根据 SKILL.md 匹配用户请求后加载 skill。
 
 opportunistic-self-start
-  Once loaded, the skill runs lightweight checks after significant work, corrections, tool failures, or repeated issues.
+  skill 已经加载后，在重大任务、用户纠正、工具失败、重复问题后做轻量自检。
 
 scheduled-reflection-adapter
-  Optional background scan through Codex automation, cron, heartbeat, hooks, or another host scheduler.
+  可选后台扫描，通过 Codex automation、cron、heartbeat、hooks 或宿主 scheduler 实现。
 ```
 
-When installed in Codex, Agent Evolution can create a 6-hour graded scan automation:
+在 Codex 中安装时，Self-Improving Skills 可以创建每 6 小时一次的 graded scan automation：
 
 ```text
-Every 6 hours
--> scan recent bounded session logs
--> extract useful learnings
--> auto-promote low-risk learnings
--> write medium/high-risk items to review candidates
--> never auto-edit global rules, skills, external systems, or secrets
+每 6 小时
+-> 扫描最近有限会话记录
+-> 提取有价值经验
+-> 低风险经验自动晋升
+-> 中高风险经验写入候选区
+-> 不自动修改全局规则、skills、外部系统或 secrets
 ```
 
 ---
 
-## Risk-Graded Auto-Promotion
+## 分级自动晋升
 
-Agent Evolution does not treat all learnings equally.
+Self-Improving Skills 不会把所有经验一视同仁。
 
-### Low Risk: Auto-Promote
+### 低风险：自动晋升
 
-Low-risk learnings can be automatically written to `evolution.md`.
+低风险经验可以自动写入 `evolution.md`。
 
-Examples:
+示例：
 
-- Explicit user preferences.
-- User-corrected low-risk behavior.
-- Stable local path or tool gotchas.
-- Repeated small workflow mistakes with clear fixes.
+- 明确用户偏好。
+- 用户明确纠正过的低风险行为。
+- 稳定的本地路径或工具坑。
+- 重复出现的小型流程错误，并且修复方式明确。
 
-Example:
+示例规则：
 
 ```markdown
 Rule:
-- When installing user-managed skills, default to `~/.agents/skills` unless the user explicitly names another directory.
+- 安装 user-managed skills 时，默认使用 `~/.agents/skills`，除非用户明确指定其他目录。
 ```
 
-### Medium Risk: Candidate Review
+### 中风险：进入候选区
 
-Medium-risk learnings go to `evolution-candidates.md`.
+中风险经验写入 `evolution-candidates.md`。
 
-Examples:
+示例：
 
-- Changes to default workflow.
-- Skill routing or trigger phrasing changes.
-- Behavior that affects several task types.
-- Inferred patterns without explicit user confirmation.
+- 修改默认工作流。
+- 修改 skill 路由或触发词。
+- 影响多个任务类型的行为。
+- 没有用户明确确认的推断性模式。
 
-### High Risk: Requires Confirmation
+### 高风险：必须确认
 
-High-risk learnings are never auto-promoted.
+高风险经验永远不自动晋升。
 
-Examples:
+示例：
 
-- File deletion or overwrite behavior.
-- GitHub push, publish, sync, or repository changes.
-- Feishu/Lark, email, posting, or other external systems.
-- Credentials, tokens, cookies, secrets.
-- Automation behavior.
-- Global instruction files such as `AGENTS.md`.
-- Skill file edits.
-- Broad cross-agent behavior changes.
+- 删除或覆盖文件。
+- GitHub push、publish、sync 或仓库变更。
+- 飞书/Lark、邮件、发布平台等外部系统。
+- 凭证、token、cookie、secret。
+- 自动化行为。
+- `AGENTS.md` 等全局指令文件。
+- skill 文件编辑。
+- 影响多个 Agent 的宽泛行为变化。
 
 ---
 
-## Installed Memory Files
+## 安装后的记忆文件
 
-Agent Evolution uses three memory files:
+Self-Improving Skills 使用三个记忆文件：
 
 ```text
 evolution.md
-  Low-risk auto-promoted learnings.
+  已自动晋升的低风险经验。
 
 evolution-candidates.md
-  Medium/high-risk learnings waiting for review.
+  等待 review 的中高风险经验。
 
 evolution-promotions.md
-  Audit log for automatic promotions.
+  自动晋升审计日志。
 ```
 
-This creates a feedback loop without letting the agent rewrite high-impact rules without review.
+这样既能形成反馈闭环，又不会让 Agent 自动重写高影响规则。
 
 ---
 
-## Install
+## 安装
 
-Agent Evolution is a single-skill repository with a lightweight installer.
+Self-Improving Skills 是一个单 skill 仓库，并自带轻量安装器。
 
-The installer uses minimal dependencies:
+安装器尽量少依赖：
 
 - `bash`
 - `mkdir`
 - `cp`
 - `tar`
-- `curl` only for one-line remote install
+- 一行远程安装时需要 `curl`
 
-No database. No Docker. No browser automation. No npm install. No external API. No GitHub token.
+不需要数据库。不需要 Docker。不需要浏览器自动化。不需要 npm install。不需要外部 API。不需要 GitHub token。
 
-### One-Line Install
+### 一行安装
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/chemny/agent-evolution/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/chemny/self-improving-skills/main/install.sh | bash
 ```
 
-### What The Installer Does
+### 安装器会做什么
 
-The installer:
+安装器会：
 
-1. Installs the skill to:
+1. 把 skill 安装到：
 
 ```text
-~/.agents/skills/agent-evolution
+~/.agents/skills/self-improving-skills
 ```
 
-2. Creates memory templates:
+2. 创建记忆模板：
 
 ```text
 evolution.md
@@ -267,53 +267,53 @@ evolution-candidates.md
 evolution-promotions.md
 ```
 
-3. Detects supported host environments:
+3. 检测宿主环境：
 
 - Codex
 - Claude Code
 - OpenClaw
 - Generic CLI
 
-4. For Codex, creates a 6-hour graded scan automation:
+4. 在 Codex 中创建 6 小时 graded scan automation：
 
 ```text
-~/.codex/automations/agent-evolution-graded-scan/automation.toml
+~/.codex/automations/self-improving-skills-graded-scan/automation.toml
 ```
 
-5. For Claude Code, OpenClaw, and generic environments, installs adapter prompts and memory templates.
+5. 在 Claude Code、OpenClaw 和通用环境中安装适配提示词和记忆模板。
 
 ---
 
-## Platform Support
+## 多平台支持
 
-| Platform | Core Skill | Memory Templates | 6-Hour Background Scan | Low-Risk Auto-Promotion |
+| 平台 | 核心 skill | 记忆模板 | 6 小时后台扫描 | 低风险自动晋升 |
 |---|---:|---:|---:|---:|
-| Codex | yes | yes | yes, via Codex automation | yes |
-| OpenClaw | yes | yes | if host scheduler is available | yes, when scheduled |
-| Claude Code | yes | yes | if hooks or cron are available | yes, when scheduled |
-| Generic CLI | yes | yes | only with `AGENT_EVOLUTION_SCAN_COMMAND` | command-dependent |
+| Codex | 支持 | 支持 | 支持，通过 Codex automation | 支持 |
+| OpenClaw | 支持 | 支持 | 取决于宿主 scheduler | 定时后支持 |
+| Claude Code | 支持 | 支持 | 取决于 hooks 或 cron | 定时后支持 |
+| Generic CLI | 支持 | 支持 | 需要 `SELF_IMPROVING_SKILLS_SCAN_COMMAND` | 取决于命令能力 |
 
-Background self-running is a host capability.
+后台自运行是宿主能力。
 
-The skill provides adapters and templates, but each platform must have a way to run scheduled jobs.
+这个 skill 提供适配器和模板，但每个平台必须有某种方式来运行定时任务。
 
 ---
 
-## Verify Install
+## 验证安装
 
-After installation, run:
+安装后运行：
 
 ```bash
-~/.agents/skills/agent-evolution/scripts/verify-install.sh
+~/.agents/skills/self-improving-skills/scripts/verify-install.sh
 ```
 
-Then start a fresh agent session and test:
+然后开启一个新的 Agent 会话，测试：
 
 ```text
-Use agent-evolution: remember that my writing style is direct and example-driven. Do not write files; just explain how you would handle this memory.
+使用 self-improving-skills：记住我的写作风格是直接、实用、多用例子。请不要写文件，只说明你会如何处理这个记忆。
 ```
 
-Expected behavior:
+预期行为：
 
 ```text
 Path: direct memory
@@ -323,15 +323,15 @@ Destination: host agent user memory
 
 ---
 
-## Usage Examples
+## 使用示例
 
-### Remember A Preference
+### 记住偏好
 
 ```text
-Remember: my writing style is direct, practical, and avoids marketing language.
+记住：我的写作风格是直接、实用，不要营销腔。
 ```
 
-Expected handling:
+预期处理：
 
 ```text
 Type: preference
@@ -339,13 +339,13 @@ Risk: low
 Action: store as user memory
 ```
 
-### Learn From A Correction
+### 从纠正中学习
 
 ```text
-You made the same directory-sync mistake again. Do not use the old sync logic anymore.
+你又犯了同样的目录同步错误，以后不要再使用旧同步逻辑。
 ```
 
-Expected handling:
+预期处理：
 
 ```text
 Type: correction
@@ -353,13 +353,13 @@ Risk: low or medium depending on scope
 Action: auto-promote if local and explicit; otherwise write candidate
 ```
 
-### Reflect After A Task
+### 任务后复盘
 
 ```text
-Summarize what should be learned from this task.
+总结一下这次任务有什么值得沉淀的经验。
 ```
 
-Expected output:
+预期输出：
 
 ```markdown
 ## Evolution Reference
@@ -371,13 +371,13 @@ Expected output:
 - Suggested rule update:
 ```
 
-### Handle A High-Risk Rule
+### 处理高风险规则
 
 ```text
-From now on, automatically delete old duplicate skills.
+以后自动删除旧的重复 skills。
 ```
 
-Expected handling:
+预期处理：
 
 ```text
 Risk: high
@@ -387,14 +387,14 @@ Reason: deletion behavior requires confirmation
 
 ---
 
-## File Structure
+## 文件结构
 
 ```text
-agent-evolution/
+self-improving-skills/
 ├── SKILL.md
 ├── install.sh
 ├── README.md
-├── README.zh.md
+├── README.en.md
 ├── LICENSE
 ├── templates/
 │   ├── evolution.md
@@ -435,33 +435,33 @@ agent-evolution/
 
 ---
 
-## Safety Boundaries
+## 安全边界
 
-Agent Evolution will not automatically:
+Self-Improving Skills 不会自动：
 
-- Store secrets, tokens, cookies, passwords, or private keys.
-- Delete files.
-- Overwrite existing files.
-- Push, publish, sync, or change GitHub repositories.
-- Operate external systems such as Feishu/Lark, email, social platforms, or production services.
-- Change global instruction files.
-- Edit skill files.
-- Change automation behavior.
-- Promote broad behavior changes without review.
+- 存储 secrets、tokens、cookies、passwords 或 private keys。
+- 删除文件。
+- 覆盖已有文件。
+- push、publish、sync 或修改 GitHub 仓库。
+- 操作飞书/Lark、邮件、社交平台、生产服务等外部系统。
+- 修改全局指令文件。
+- 编辑 skill 文件。
+- 修改自动化行为。
+- 晋升宽泛行为变化。
 
-High-impact changes are written to candidates and require confirmation.
+高影响变更只能写入候选区，必须等待确认。
 
 ---
 
-## Update
+## 更新
 
-Re-run the installer:
+重新运行安装器：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/chemny/agent-evolution/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/chemny/self-improving-skills/main/install.sh | bash
 ```
 
-Then start a fresh agent session if your host scans skills only at startup.
+如果宿主只在启动时扫描 skills，更新后重新开启一个新会话。
 
 ---
 

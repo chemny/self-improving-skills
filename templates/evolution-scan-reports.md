@@ -1,10 +1,10 @@
-# Agent Evolution Scan Reports
+# Self-Improving Skills Scan Reports
 
-This file stores detailed reports produced after each scheduled Agent Evolution scan.
+This file stores detailed reports produced after each scheduled Self-Improving Skills scan.
 
 Purpose:
 - Help the user audit what the scan reviewed, accepted, rejected, ignored, promoted, or deferred.
-- Make scan behavior inspectable while tuning Agent Evolution.
+- Make scan behavior inspectable while tuning Self-Improving Skills.
 - Keep reports separate from durable memory rules.
 
 Rules:

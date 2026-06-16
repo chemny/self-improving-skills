@@ -41,7 +41,7 @@ function resolveWorkspacePath(input) {
 
 let root;
 try {
-  root = resolveWorkspacePath(process.env.AGENT_EVOLUTION_DIR || ".learnings");
+  root = resolveWorkspacePath(process.env.SELF_IMPROVING_SKILLS_DIR || ".learnings");
 } catch (error) {
   console.error(error.message);
   process.exit(1);

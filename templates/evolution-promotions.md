@@ -1,6 +1,6 @@
-# Agent Evolution Promotion Log
+# Self-Improving Skills Promotion Log
 
-This file records low-risk Agent Evolution memories that were automatically promoted.
+This file records low-risk Self-Improving Skills memories that were automatically promoted.
 
 Rules:
 - Every automatic promotion to `evolution.md` should have a receipt here.
