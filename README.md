@@ -249,6 +249,23 @@ Self-Improving Skills 是一个单 skill 仓库，并自带轻量安装器。
 curl -fsSL https://raw.githubusercontent.com/chemny/self-improving-skills/main/install.sh | bash
 ```
 
+默认安装只安装 skill、记忆模板和适配文件，**不会自动开启后台扫描**。
+
+### 开启后台扫描
+
+Codex automation 需要显式启用：
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/chemny/self-improving-skills/main/install.sh | bash -s -- --enable-codex-automation
+```
+
+通用 cron 也需要显式启用，并提供实际运行扫描的命令：
+
+```bash
+SELF_IMPROVING_SKILLS_SCAN_COMMAND='<agent command that runs the scan prompt>' \
+  curl -fsSL https://raw.githubusercontent.com/chemny/self-improving-skills/main/install.sh | bash -s -- --enable-generic-cron
+```
+
 ### 安装器会做什么
 
 安装器会：
@@ -274,13 +291,13 @@ evolution-promotions.md
 - OpenClaw
 - Generic CLI
 
-4. 在 Codex 中创建 6 小时 graded scan automation：
+4. 默认不启用后台扫描。只有传入 `--enable-codex-automation` 时，才在 Codex 中创建 6 小时 graded scan automation：
 
 ```text
 ~/.codex/automations/self-improving-skills-graded-scan/automation.toml
 ```
 
-5. 在 Claude Code、OpenClaw 和通用环境中安装适配提示词和记忆模板。
+5. 在 Claude Code、OpenClaw 和通用环境中安装适配提示词和记忆模板；这些平台的后台任务需要宿主 scheduler、hook 或 cron 另外接入。
 
 ---
 
@@ -288,14 +305,14 @@ evolution-promotions.md
 
 | 平台 | 核心 skill | 记忆模板 | 6 小时后台扫描 | 低风险自动晋升 |
 |---|---:|---:|---:|---:|
-| Codex | 支持 | 支持 | 支持，通过 Codex automation | 支持 |
-| OpenClaw | 支持 | 支持 | 取决于宿主 scheduler | 定时后支持 |
-| Claude Code | 支持 | 支持 | 取决于 hooks 或 cron | 定时后支持 |
-| Generic CLI | 支持 | 支持 | 需要 `SELF_IMPROVING_SKILLS_SCAN_COMMAND` | 取决于命令能力 |
+| Codex | 支持 | 支持 | 显式启用后，通过 Codex automation | 支持 |
+| OpenClaw | 支持 | 支持 | 取决于宿主 scheduler，需单独接入 | 定时后支持 |
+| Claude Code | 支持 | 支持 | 取决于 hooks 或 cron，需单独接入 | 定时后支持 |
+| Generic CLI | 支持 | 支持 | 需要 `--enable-generic-cron` 和 `SELF_IMPROVING_SKILLS_SCAN_COMMAND` | 取决于命令能力 |
 
 后台自运行是宿主能力。
 
-这个 skill 提供适配器和模板，但每个平台必须有某种方式来运行定时任务。
+这个 skill 提供适配器和模板，但每个平台必须有某种方式来运行定时任务。公开安装默认是安全的手动模式，后台扫描必须由用户明确选择。
 
 ---
 

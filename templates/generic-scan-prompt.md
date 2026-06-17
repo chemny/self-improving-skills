@@ -158,23 +158,26 @@ Application routing:
 - Global rule -> host instruction file only after explicit review.
 - Unclear, stale, unsafe, or one-off items -> archive or reject.
 
-Scan review summary:
+Scan result notification:
+
+The automation result is not the formal report. Keep successful runs silent whenever the host allows it.
 
 ```markdown
-## Self-Improving Skills Scan Review - YYYY-MM-DD HH:mm
+<empty result when allowed>
+```
 
-Effective learnings:
-- [low-risk] <ready for durable memory, with destination>
+If the host requires a non-empty result for a successful run, return only:
 
-Needs review:
-- [medium/high-risk] <candidate title>
-  Reason: <why review is needed>
+```markdown
+Self-Improving Skills: scan completed.
+```
 
-Rejected / ignored:
-- <duplicate / vague / one-off / unsafe / self-referential / no action>
+Do not mention counts, promoted items, candidates, project records, accepted/rejected lists, raw excerpts, or the detailed Chinese report in successful automation results. Those belong in `evolution-scan-reports.md` and the dashboard.
 
-Next actions:
-- <approve, revise, route, validate, or archive>
+Only return a visible message when there are warnings or partial failures:
+
+```markdown
+Self-Improving Skills: scan completed with warning. <short warning>. Report saved or staged.
 ```
 
 Detailed scan report:
@@ -184,9 +187,9 @@ Append this report to `evolution-scan-reports.md` after every scheduled scan, ev
 Completion contract:
 - A scan is not complete until `evolution-scan-reports.md` has a new `Scan Report` entry for that run.
 - This is required for duplicate-only, no-new-writes, no-useful-candidates, concurrent, partial, and skipped scans.
-- Do not treat automation-local memory, internal notes, or the scan review summary as a substitute for the formal scan report.
+- Do not treat automation-local memory, internal notes, or the scan notification as a substitute for the formal scan report.
 - The report must include a Chinese readable section so the user can audit the result directly. Keep the structured English fields for machine consistency, then add `### 中文报告` with plain Chinese explanation of counts, accepted items, rejected items, write results, and next actions.
-- If a configured report thread is available, post the concise `Self-Improving Skills Scan Review` there only after the formal file report is written. If no report thread is configured or accessible, do not post to the active user chat; write the formal file report and note that thread delivery was unavailable.
+- If a configured report thread is available, post only a concise warning or required completion status there after the formal file report is written. If no report thread is configured or accessible, do not post to the active user chat and do not treat that absence as a user-visible warning by itself.
 
 ```markdown
 ## YYYY-MM-DD HH:mm - Scan Report

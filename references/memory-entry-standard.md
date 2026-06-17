@@ -137,28 +137,29 @@ Decision needed:
 - approve | revise | reject | route_to_skill:<name> | archive
 ```
 
-## Scan review summary
+## Scan result notification
 
-Background scans and manual reviews should report what happened in a readable summary before or alongside writes:
+Background scans and manual reviews should keep successful automation results silent whenever the host allows it. The automation result is not the formal report.
 
 ```markdown
-## Self-Improving Skills Scan Review - YYYY-MM-DD HH:mm
-
-Effective learnings:
-- [low-risk] <ready for durable memory, with destination>
-
-Needs review:
-- [medium/high-risk] <candidate title>
-  Reason: <why review is needed>
-
-Rejected / ignored:
-- <duplicate / vague / one-off / unsafe / self-referential / no action>
-
-Next actions:
-- <approve, revise, route, validate, or archive>
+<empty result when allowed>
 ```
 
-If the scan found nothing worth saving, say that clearly. Do not fill memory files with placeholder content.
+If the host requires a non-empty result for a successful run, return only:
+
+```markdown
+Self-Improving Skills: scan completed.
+```
+
+Do not mention counts, promoted items, candidates, project records, accepted/rejected lists, raw excerpts, or the detailed Chinese report in successful automation results. Those belong in the formal report and dashboard.
+
+Only return a visible message when the user should notice a warning or partial failure:
+
+```markdown
+Self-Improving Skills: scan completed with warning. <short warning>. Report saved or staged.
+```
+
+If the scan found nothing worth saving, record that in the formal report. Do not fill memory files with placeholder content.
 
 Scheduled scans must separate inventory from triage:
 
@@ -183,11 +184,11 @@ Counts:
 - Rejected / ignored: <number>
 ```
 
-For scheduled scans, a run is not complete until the formal scan report has been appended to `evolution-scan-reports.md`. This applies even when the run finds only duplicates, writes no memory entries, is concurrent with another scan, or skips all inspected items. Automation-local memory, internal notes, and result summaries are not substitutes for the formal report.
+For scheduled scans, a run is not complete until the formal scan report has been appended to `evolution-scan-reports.md`. This applies even when the run finds only duplicates, writes no memory entries, is concurrent with another scan, or skips all inspected items. Automation-local memory, internal notes, and notification summaries are not substitutes for the formal report.
 
 Every formal scan report should include a Chinese readable section. Keep structured English fields for stable parsing, then add `### 中文报告` with plain Chinese explanations of counts, accepted items, rejected or skipped items, write results, and next actions.
 
-If a configured report thread is available, post the concise `Self-Improving Skills Scan Review` there after the formal report is written. If no report thread is configured or accessible, do not post to the active user chat; keep the formal file report as the source of truth and state that thread delivery was unavailable.
+If a configured report thread is available, post only a concise warning or required completion status there after the formal report is written. If no report thread is configured or accessible, do not post to the active user chat and do not treat that absence as a user-visible warning by itself.
 
 ## Promotion receipt
 

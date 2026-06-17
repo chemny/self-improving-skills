@@ -2,6 +2,7 @@
 set -euo pipefail
 
 skill_dir="${1:?skill dir required}"
+enable_cron="${2:-}"
 target="$HOME/.self-improving-skills"
 
 mkdir -p "$target/memories"
@@ -15,13 +16,15 @@ for file in evolution.md evolution-candidates.md evolution-promotions.md evoluti
   fi
 done
 
-if [ -n "${SELF_IMPROVING_SKILLS_SCAN_COMMAND:-}" ] && command -v crontab >/dev/null 2>&1; then
+if [ "$enable_cron" = "--enable-cron" ] && [ -n "${SELF_IMPROVING_SKILLS_SCAN_COMMAND:-}" ] && command -v crontab >/dev/null 2>&1; then
   tmp="$(mktemp "${TMPDIR:-/tmp}/self-improving-skills-cron.XXXXXX")"
   crontab -l 2>/dev/null | grep -v 'self-improving-skills generic scan' > "$tmp" || true
   printf '0 */6 * * * %s # self-improving-skills generic scan\n' "$SELF_IMPROVING_SKILLS_SCAN_COMMAND" >> "$tmp"
   crontab "$tmp"
   rm -f "$tmp"
   echo "Installed generic cron using SELF_IMPROVING_SKILLS_SCAN_COMMAND."
+elif [ "$enable_cron" = "--enable-cron" ]; then
+  echo "Generic files installed at $target. Generic cron was requested but SELF_IMPROVING_SKILLS_SCAN_COMMAND or crontab is unavailable."
 else
-  echo "Generic files installed at $target. No generic cron was created because SELF_IMPROVING_SKILLS_SCAN_COMMAND is not set."
+  echo "Generic files installed at $target. No generic cron was created; re-run with --enable-generic-cron and SELF_IMPROVING_SKILLS_SCAN_COMMAND to schedule scans."
 fi

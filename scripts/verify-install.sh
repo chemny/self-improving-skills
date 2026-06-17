@@ -28,6 +28,17 @@ check_any_file() {
   ok=0
 }
 
+check_optional_any_file() {
+  local file
+  for file in "$@"; do
+    if [ -f "$file" ]; then
+      printf 'OK   %s\n' "$file"
+      return 0
+    fi
+  done
+  printf 'SKIP optional Codex automation not enabled\n'
+}
+
 check_file "$skill_dir/SKILL.md"
 check_file "$skill_dir/references/self-start.md"
 check_file "$skill_dir/references/memory-entry-standard.md"
@@ -60,7 +71,7 @@ if [ -d "$codex_home" ]; then
   check_file "$codex_home/memories/evolution-promotions.md"
   check_file "$codex_home/memories/evolution-scan-reports.md"
   check_writable_dir "$codex_home/memories"
-  check_any_file \
+  check_optional_any_file \
     "$codex_home/automations/self-improving-skills-graded-scan/automation.toml" \
     "$codex_home/automations/self-improving-skills-candidate-scan/automation.toml" \
     "$codex_home/automations/agent-evolution-graded-scan/automation.toml" \

@@ -84,6 +84,25 @@ This level is not automatic by installing the skill. It requires host automation
 
 🔴 CHECKPOINT / 🛑 STOP: Before enabling scheduled reflection, confirm the host, schedule, readable session scope, write targets, and review policy with the user.
 
+## Automation design principles
+
+Use these principles when designing, installing, or revising Self-Improving Skills background jobs:
+
+1. Public installs default to manual-safe mode.
+   Background scans, cron jobs, host automations, and scheduled memory writes must be explicit opt-in.
+
+2. Separate skill capability from host scheduling.
+   This skill provides rules, templates, scripts, adapters, and report formats. Timed execution belongs to Codex Automation, cron, hooks, OpenClaw scheduler, Claude Code host integration, or another platform scheduler.
+
+3. Separate cross-platform rules from platform-specific automation.
+   The instruction workflow should be portable across Codex, Claude Code, OpenClaw, and generic agents; each platform's background runner must be documented and configured separately.
+
+4. Successful background runs should not interrupt the user.
+   If the host allows it, stay silent after successful runs. If a non-empty result is required, return only the shortest completion status. Notify visibly only for warnings, partial failures, blocked writes, or required user action.
+
+5. Detailed scan data belongs in durable audit surfaces.
+   Project records, counts, accepted/rejected items, Chinese reports, and write results should live in `evolution-scan-reports.md` and the dashboard, not in recurring notification messages.
+
 If configured, the scheduled job should:
 
 1. Read only recent bounded session material.

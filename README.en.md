@@ -249,6 +249,23 @@ No database. No Docker. No browser automation. No npm install. No external API. 
 curl -fsSL https://raw.githubusercontent.com/chemny/self-improving-skills/main/install.sh | bash
 ```
 
+The default install adds the skill, memory templates, and adapter files only. It **does not enable background scans automatically**.
+
+### Enable Background Scans
+
+Codex automation is opt-in:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/chemny/self-improving-skills/main/install.sh | bash -s -- --enable-codex-automation
+```
+
+Generic cron is also opt-in and requires the exact scan command:
+
+```bash
+SELF_IMPROVING_SKILLS_SCAN_COMMAND='<agent command that runs the scan prompt>' \
+  curl -fsSL https://raw.githubusercontent.com/chemny/self-improving-skills/main/install.sh | bash -s -- --enable-generic-cron
+```
+
 ### What The Installer Does
 
 The installer:
@@ -274,13 +291,13 @@ evolution-promotions.md
 - OpenClaw
 - Generic CLI
 
-4. For Codex, creates a 6-hour graded scan automation:
+4. Does not enable background scanning by default. Only when `--enable-codex-automation` is passed, it creates a Codex 6-hour graded scan automation:
 
 ```text
 ~/.codex/automations/self-improving-skills-graded-scan/automation.toml
 ```
 
-5. For Claude Code, OpenClaw, and generic environments, installs adapter prompts and memory templates.
+5. For Claude Code, OpenClaw, and generic environments, installs adapter prompts and memory templates; those platforms still need a host scheduler, hook, or cron job to run in the background.
 
 ---
 
@@ -288,14 +305,14 @@ evolution-promotions.md
 
 | Platform | Core Skill | Memory Templates | 6-Hour Background Scan | Low-Risk Auto-Promotion |
 |---|---:|---:|---:|---:|
-| Codex | yes | yes | yes, via Codex automation | yes |
-| OpenClaw | yes | yes | if host scheduler is available | yes, when scheduled |
-| Claude Code | yes | yes | if hooks or cron are available | yes, when scheduled |
-| Generic CLI | yes | yes | only with `SELF_IMPROVING_SKILLS_SCAN_COMMAND` | command-dependent |
+| Codex | yes | yes | opt-in, via Codex automation | yes |
+| OpenClaw | yes | yes | requires host scheduler integration | yes, when scheduled |
+| Claude Code | yes | yes | requires hooks or cron integration | yes, when scheduled |
+| Generic CLI | yes | yes | requires `--enable-generic-cron` and `SELF_IMPROVING_SKILLS_SCAN_COMMAND` | command-dependent |
 
 Background self-running is a host capability.
 
-The skill provides adapters and templates, but each platform must have a way to run scheduled jobs.
+The skill provides adapters and templates, but each platform must have a way to run scheduled jobs. Public installation defaults to safe manual mode; background scanning must be explicitly selected by the user.
 
 ---
 

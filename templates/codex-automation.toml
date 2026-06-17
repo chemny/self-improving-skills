@@ -248,26 +248,27 @@ Next actions:
 - <用户需要 review、validate、route、archive，或无需行动>
 ```
 
-After each scan, include a readable review summary in the automation result:
+After each scan, keep the automation result silent for successful runs whenever the host allows it. The automation result is not the formal report.
 
 ```markdown
-## Self-Improving Skills Scan Review - YYYY-MM-DD HH:mm
-
-Effective learnings:
-- [low-risk] <ready for durable memory, with destination>
-
-Needs review:
-- [medium/high-risk] <candidate title>
-  Reason: <why review is needed>
-
-Rejected / ignored:
-- <duplicate / vague / one-off / unsafe / self-referential / no action>
-
-Next actions:
-- <approve, revise, route, validate, or archive>
+<empty result when allowed>
 ```
 
-If this automation can post to a configured report thread, post the same concise `Self-Improving Skills Scan Review` there after the formal file report is written. If no report thread is configured or accessible, do not post to the active user chat; write the formal file report and state in the automation result that thread delivery was unavailable.
+If the host requires a non-empty result for a successful run, return only:
+
+```markdown
+Self-Improving Skills: scan completed.
+```
+
+Do not mention counts, promoted items, candidates, project records, accepted/rejected lists, raw excerpts, or the detailed Chinese report in successful automation results. Those belong in `evolution-scan-reports.md` and the dashboard.
+
+Only return a visible message when there is a warning or partial failure:
+
+```markdown
+Self-Improving Skills: scan completed with warning. <short warning>. Report saved or staged.
+```
+
+Do not treat report-thread absence as a user-visible warning by itself. If no report thread is configured or accessible, do not post to the active user chat; rely on the formal report file and dashboard.
 
 Do not write raw summaries, vague advice, or unordered transcript snippets. Every candidate or promotion must include status, risk, confidence, scope, source, rule, validation state, destination, application log, and next action or review condition.
 
